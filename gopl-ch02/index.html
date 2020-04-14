@@ -1,0 +1,93 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=generator content="Hugo 0.69.0"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><title>Golang 程序结构 | A Crazy Cat</title><meta property="og:title" content="Golang 程序结构 - A Crazy Cat"><meta property="og:type" content="article"><meta property="article:published_time" content="2019-03-09T23:37:21+08:00"><meta property="article:modified_time" content="2019-03-09T23:37:21+08:00"><meta name=Keywords content><meta name=description content="Golang 程序结构"><meta name=author content="Gray Lnil"><meta property="og:url" content="https://www.offf.xyz/gopl-ch02/"><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link rel=stylesheet href=/css/normalize.css><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/style.css><script type=text/javascript src=//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js></script></head><body><header id=header class=clearfix><div class=container><div class=col-group><div class=site-name><a id=logo href=https://www.offf.xyz/>A Crazy Cat</a><p class=description>Maybe nothing was found here.</p></div><div><nav id=nav-menu class=clearfix><a href=https://www.offf.xyz/>首页</a>
+<a href=https://www.offf.xyz/archives/ title=归档>归档</a>
+<a href=https://www.offf.xyz/about/ title=关于>关于</a></nav></div></div></div></header><div id=body><div class=container><div class=col-group><div class=col-8 id=main><div class=res-cons><article class=post><header><h1 class=post-title>Golang 程序结构</h1></header><date class="post-meta meta-date">2019年3月9日</date><div class=post-meta><span>|</span>
+<span class=meta-category><a href=https://www.offf.xyz/categories/golang>golang</a></span></div><div class=post-meta><span id=busuanzi_container_page_pv>|<span id=busuanzi_value_page_pv></span><span> 阅读</span></span></div><div class=post-content><h3 id=关键字>关键字</h3><p>go中含有25个关键字</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    <span style=color:#000;font-weight:700>break</span> <span style=color:#000;font-weight:700>default</span> <span style=color:#000;font-weight:700>func</span> <span style=color:#000;font-weight:700>interface</span> <span style=color:#000;font-weight:700>select</span>
+    <span style=color:#000;font-weight:700>case</span> <span style=color:#000;font-weight:700>defer</span> <span style=color:#000;font-weight:700>go</span> <span style=color:#000;font-weight:700>map</span> <span style=color:#000;font-weight:700>struct</span>
+    <span style=color:#000;font-weight:700>chan</span> <span style=color:#000;font-weight:700>else</span> <span style=color:#000;font-weight:700>goto</span> <span style=color:#000;font-weight:700>package</span> <span style=color:#000;font-weight:700>switch</span>
+    <span style=color:#000;font-weight:700>const</span> <span style=color:#000;font-weight:700>fallthrough</span> <span style=color:#000;font-weight:700>if</span> <span style=color:#000;font-weight:700>range</span> <span style=color:#000;font-weight:700>type</span>
+    <span style=color:#000;font-weight:700>continue</span> <span style=color:#000;font-weight:700>for</span> <span style=color:#000;font-weight:700>import</span> <span style=color:#000;font-weight:700>return</span> <span style=color:#000;font-weight:700>var</span>
+</code></pre></div><h3 id=此外还有大约30多个预定义的名字>此外，还有大约30多个预定义的名字</h3><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    内建常量: <span style=color:#000;font-weight:700>true</span> <span style=color:#000;font-weight:700>false</span> <span style=color:#000;font-weight:700>iota</span> <span style=color:#000;font-weight:700>nil</span>
+    内建类型: <span style=color:#458;font-weight:700>int</span> <span style=color:#458;font-weight:700>int8</span> <span style=color:#458;font-weight:700>int16</span> <span style=color:#458;font-weight:700>int32</span> <span style=color:#458;font-weight:700>int64</span>
+    <span style=color:#458;font-weight:700>uint</span> <span style=color:#458;font-weight:700>uint8</span> <span style=color:#458;font-weight:700>uint16</span> <span style=color:#458;font-weight:700>uint32</span> <span style=color:#458;font-weight:700>uint64</span> <span style=color:#458;font-weight:700>uintptr</span>
+    <span style=color:#458;font-weight:700>float32</span> <span style=color:#458;font-weight:700>float64</span> <span style=color:#458;font-weight:700>complex128</span> <span style=color:#458;font-weight:700>complex64</span>
+    <span style=color:#458;font-weight:700>bool</span> <span style=color:#458;font-weight:700>byte</span> <span style=color:#458;font-weight:700>rune</span> <span style=color:#458;font-weight:700>string</span> <span style=color:#458;font-weight:700>error</span>
+    内建函数: make len cap new append copy close delete
+    complex real imag
+    panic recover
+</code></pre></div><h3 id=名字大小写>名字大小写</h3><p>大写的名字表明是可导出的，即可被其它包访问，如fmt包中的Println
+小写的名字只能在包内使用</p><h3 id=名字长度>名字长度</h3><p>一般名字的长度是没有限制的。
+Go提倡短小的名称，如表示索引，定义为i,而不是index等
+当作用域范围较大或生命周期较长的变量，采用较长的名字可能会更好。</p><h3 id=声明>声明</h3><p>主要有4种类型的声明语句：</p><ol><li>var(变量)<br>var 变量名字 类型 = 表达式<br>如果省略var和类型，根据初始化表达式来推导变量的类型信息<br>如果省略'=表达式'信息,则自动按类型对应的&rsquo;0'值初始化</li></ol><ul><li>数值类型变量对应的零值是0</li><li>布尔类型变量对应的零值是false</li><li>字符串类型对应的零值是空字符串</li><li>接口或引用类型（包括slice、map、chan和函数）变量对应的零值是nil</li><li>数组或结构体等聚合类型对应零值是每个元素或字段都是对应该类型的零值</li><li>Go语言中不存在未初始化的变量</li></ul><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>   <span style=color:#000;font-weight:700>var</span> a = <span style=color:#099>1.2</span>
+   <span style=color:#000;font-weight:700>var</span> b = (a <span style=color:#000;font-weight:700>+</span> <span style=color:#099>1</span>) <span style=color:#000;font-weight:700>*</span> (a <span style=color:#000;font-weight:700>-</span> <span style=color:#099>1</span>)
+   <span style=color:#000;font-weight:700>var</span> c
+   d <span style=color:#000;font-weight:700>:=</span> c <span style=color:#000;font-weight:700>*</span> a
+   i, j <span style=color:#000;font-weight:700>:=</span> <span style=color:#099>0</span>, <span style=color:#099>1</span>
+   i, j = j, i
+</code></pre></div><ol start=2><li>const(常量)</li></ol><ul><li>声明单个变量</li></ul><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>  <span style=color:#000;font-weight:700>const</span> MAX = <span style=color:#099>1024</span>  
+</code></pre></div><ul><li>声明一组变量</li></ul><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    <span style=color:#000;font-weight:700>const</span> (
+        first = <span style=color:#099>1</span> <span style=color:#000;font-weight:700>&lt;&lt;</span> <span style=color:#099>1</span>
+        second = <span style=color:#099>1</span> <span style=color:#000;font-weight:700>&lt;&lt;</span> <span style=color:#099>2</span>
+    )
+</code></pre></div><ol start=3><li>type(类型)
+type 类型名字 底层类型</li></ol><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    <span style=color:#000;font-weight:700>type</span> Stu <span style=color:#000;font-weight:700>struct</span> {
+        name <span style=color:#458;font-weight:700>string</span>
+        age <span style=color:#458;font-weight:700>int</span>
+    }
+
+    <span style=color:#000;font-weight:700>type</span> Celsius <span style=color:#458;font-weight:700>float64</span> <span style=color:#998;font-style:italic>// 摄氏温度
+</span><span style=color:#998;font-style:italic></span>    <span style=color:#000;font-weight:700>type</span> Fahrenheit <span style=color:#458;font-weight:700>float64</span> <span style=color:#998;font-style:italic>// 华氏温度
+</span><span style=color:#998;font-style:italic></span>    <span style=color:#000;font-weight:700>const</span> (
+        AbsoluteZeroC Celsius = <span style=color:#000;font-weight:700>-</span><span style=color:#099>273.15</span> <span style=color:#998;font-style:italic>// 绝对零度
+</span><span style=color:#998;font-style:italic></span>        FreezingC Celsius = <span style=color:#099>0</span> <span style=color:#998;font-style:italic>// 结冰点温度
+</span><span style=color:#998;font-style:italic></span>        BoilingC Celsius = <span style=color:#099>100</span> <span style=color:#998;font-style:italic>// 沸水温度
+</span><span style=color:#998;font-style:italic></span>    )
+</code></pre></div><ol start=4><li>func(函数)<br>Go推崇”一件事情有且只有一种方法完成”的思想</li></ol><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    <span style=color:#000;font-weight:700>func</span> <span style=color:#900;font-weight:700>max</span>(x, y <span style=color:#458;font-weight:700>int</span>) <span style=color:#458;font-weight:700>int</span> {
+        <span style=color:#000;font-weight:700>if</span> x &gt; y {
+            <span style=color:#000;font-weight:700>return</span> x
+        }
+
+        <span style=color:#000;font-weight:700>return</span> y
+    }
+</code></pre></div><h3 id=指针>指针</h3><ol><li>每个变量都有内存地址，指针即变量的地址</li><li>指针的零值为nil</li></ol><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    x <span style=color:#000;font-weight:700>:=</span> <span style=color:#099>1</span>
+    p <span style=color:#000;font-weight:700>:=</span> <span style=color:#000;font-weight:700>&amp;</span>x <span style=color:#998;font-style:italic>// p, of type *int, points to x
+</span><span style=color:#998;font-style:italic></span>    fmt.<span style=color:#900;font-weight:700>Println</span>(<span style=color:#000;font-weight:700>*</span>p) <span style=color:#998;font-style:italic>// &#34;1&#34;
+</span><span style=color:#998;font-style:italic></span>    <span style=color:#000;font-weight:700>*</span>p = <span style=color:#099>2</span> <span style=color:#998;font-style:italic>// equivalent to x = 2
+</span><span style=color:#998;font-style:italic></span>    fmt.<span style=color:#900;font-weight:700>Println</span>(x) <span style=color:#998;font-style:italic>// &#34;2&#34;
+</span></code></pre></div><ol start=3><li>返回函数中局部变量的地址也是安全的, 因为指针仍然引用这个变量</li></ol><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    <span style=color:#000;font-weight:700>var</span> p = <span style=color:#900;font-weight:700>f</span>()
+    
+    <span style=color:#000;font-weight:700>func</span> <span style=color:#900;font-weight:700>f</span>() <span style=color:#000;font-weight:700>*</span><span style=color:#458;font-weight:700>int</span> {
+        v <span style=color:#000;font-weight:700>:=</span> <span style=color:#099>1</span>
+        <span style=color:#000;font-weight:700>return</span> <span style=color:#000;font-weight:700>&amp;</span>v
+    }
+</code></pre></div><ol start=4><li>new 函数</li></ol><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    p <span style=color:#000;font-weight:700>:=</span> <span style=color:#0086b3>new</span>(<span style=color:#458;font-weight:700>int</span>)
+
+    <span style=color:#000;font-weight:700>func</span> <span style=color:#900;font-weight:700>newInt</span>() <span style=color:#000;font-weight:700>*</span><span style=color:#458;font-weight:700>int</span> {
+        <span style=color:#000;font-weight:700>return</span> <span style=color:#0086b3>new</span>(<span style=color:#458;font-weight:700>int</span>)
+    }
+    <span style=color:#998;font-style:italic>//等价于
+</span><span style=color:#998;font-style:italic></span>    <span style=color:#000;font-weight:700>func</span> <span style=color:#900;font-weight:700>newInt</span>() <span style=color:#000;font-weight:700>*</span><span style=color:#458;font-weight:700>int</span> {
+        <span style=color:#000;font-weight:700>var</span> dummy <span style=color:#458;font-weight:700>int</span>
+        <span style=color:#000;font-weight:700>return</span> <span style=color:#000;font-weight:700>&amp;</span>dummy
+    }
+</code></pre></div><h3 id=包和文件>包和文件</h3><ol><li>Go语言中的包和其他语言的库或模块的概念类似，目的都是为了支持模块化、封装、单独编译和代码重用。</li><li>一个包的源代码保存在一个或多个以.go为文件后缀名的源文件中，通常一个包所在目录路径的后缀是包的导入路径。</li><li>每个源文件中可以添加一个init函数，在多次引用时，只执行一次调用</li></ol><h3 id=作用域>作用域</h3><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    <span style=color:#000;font-weight:700>if</span> x <span style=color:#000;font-weight:700>:=</span> <span style=color:#900;font-weight:700>f</span>(); x <span style=color:#000;font-weight:700>==</span> <span style=color:#099>0</span> {
+        fmt.<span style=color:#900;font-weight:700>Println</span>(x)
+    } <span style=color:#000;font-weight:700>else</span> <span style=color:#000;font-weight:700>if</span> y <span style=color:#000;font-weight:700>:=</span> <span style=color:#900;font-weight:700>g</span>(x); x <span style=color:#000;font-weight:700>==</span> y {
+        fmt.<span style=color:#900;font-weight:700>Println</span>(x, y)
+    } <span style=color:#000;font-weight:700>else</span> {
+        fmt.<span style=color:#900;font-weight:700>Println</span>(x, y)
+    }
+    fmt.<span style=color:#900;font-weight:700>Println</span>(x, y) <span style=color:#998;font-style:italic>// compile error: x and y are not visible here
+</span></code></pre></div></div><div class=post-archive><h2>See Also</h2><ul class=listing><li><a href=/gopl-ch08/>Goroutines和Channels</a></li><li><a href=/gopl-ch01/>Golang 入门</a></li><li><a href=/gopl-ch07/>Golang接口</a></li><li><a href=/gopl-ch00/>Golang简介整理</a></li><li><a href=/the-go-programming-language/>The Go Programming Language</a></li></ul></div><div class="post-meta meta-tags"><ul class=clearfix><li><a href=https://www.offf.xyz/tags/golang>golang</a></li></ul></div></article></div></div><div id=secondary><section class=widget><form id=search action=https://www.offf.xyz/search method=get accept-charset=utf-8 target=_blank _lpchecked=1><input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch value=https://www.offf.xyz/>
+<button type=submit class="submit icon-search"></button></form></section><section class=widget><h3 class=widget-title>最近文章</h3><ul class=widget-list></ul></section><section class=widget><h3 class=widget-title>分类</h3><ul class=widget-list><li><a href=https://www.offf.xyz/categories/c++/>c++ (1)</a></li><li><a href=https://www.offf.xyz/categories/c++11/>c++11 (5)</a></li><li><a href=https://www.offf.xyz/categories/curl/>curl (1)</a></li><li><a href=https://www.offf.xyz/categories/editor/>editor (1)</a></li><li><a href=https://www.offf.xyz/categories/golang/>golang (10)</a></li><li><a href=https://www.offf.xyz/categories/shell/>shell (2)</a></li></ul></section><section class=widget><h3 class=widget-title>标签</h3><div class=tagcloud><a href=https://www.offf.xyz/tags/c++/>c++</a>
+<a href=https://www.offf.xyz/tags/c++11/>c++11</a>
+<a href=https://www.offf.xyz/tags/curl/>curl</a>
+<a href=https://www.offf.xyz/tags/editor/>editor</a>
+<a href=https://www.offf.xyz/tags/golang/>golang</a>
+<a href=https://www.offf.xyz/tags/shell/>shell</a></div></section><section class=widget><h3 class=widget-title>其它</h3><ul class=widget-list><li><a href=https://www.offf.xyz/index.xml>文章 RSS</a></li></ul></section></div></div></div></div><footer id=footer><div class=container>&copy; 2020 <a href=https://www.offf.xyz/>A Crazy Cat By Gray Lnil</a>.</div></footer><script type=text/javascript>(function(){$("pre code").parent().addClass("line-numbers")}());window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:true}};</script><script type=text/javascript src=/js/prism.js async></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script><a id=rocket href=#top></a><script type=text/javascript src="/js/totop.js?v=0.0.0" async></script><script type=text/javascript src=//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js async></script><script type=text/javascript>(function(){if(typeof self==='undefined'||!self.Prism||!self.document){return;}
+if(!Prism.plugins.toolbar){console.warn('Copy to Clipboard plugin loaded before Toolbar plugin.');return;}
+var ClipboardJS=window.ClipboardJS||undefined;if(!ClipboardJS&&typeof require==='function'){ClipboardJS=require('clipboard');}
+var callbacks=[];if(!ClipboardJS){var script=document.createElement('script');var head=document.querySelector('head');script.onload=function(){ClipboardJS=window.ClipboardJS;if(ClipboardJS){while(callbacks.length){callbacks.pop()();}}};script.src='https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js';head.appendChild(script);}
+Prism.plugins.toolbar.registerButton('copy-to-clipboard',function(env){var linkCopy=document.createElement('button');linkCopy.textContent='复制代码';if(!ClipboardJS){callbacks.push(registerClipboard);}else{registerClipboard();}
+return linkCopy;function registerClipboard(){var clip=new ClipboardJS(linkCopy,{'text':function(){return env.code;}});clip.on('success',function(){linkCopy.textContent='复制成功!';resetText();});clip.on('error',function(){linkCopy.textContent='按 Ctrl+C 复制';resetText();});}
+function resetText(){setTimeout(function(){linkCopy.textContent='复制代码';},5000);}});})();</script></body></html>

@@ -1,0 +1,138 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=generator content="Hugo 0.69.0"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><title>Goroutines和Channels | A Crazy Cat</title><meta property="og:title" content="Goroutines和Channels - A Crazy Cat"><meta property="og:type" content="article"><meta property="article:published_time" content="2019-03-08T23:37:21+08:00"><meta property="article:modified_time" content="2019-03-08T23:37:21+08:00"><meta name=Keywords content><meta name=description content="Goroutines和Channels"><meta name=author content="Gray Lnil"><meta property="og:url" content="https://www.offf.xyz/gopl-ch08/"><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link rel=stylesheet href=/css/normalize.css><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/style.css><script type=text/javascript src=//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js></script></head><body><header id=header class=clearfix><div class=container><div class=col-group><div class=site-name><a id=logo href=https://www.offf.xyz/>A Crazy Cat</a><p class=description>Maybe nothing was found here.</p></div><div><nav id=nav-menu class=clearfix><a href=https://www.offf.xyz/>首页</a>
+<a href=https://www.offf.xyz/archives/ title=归档>归档</a>
+<a href=https://www.offf.xyz/about/ title=关于>关于</a></nav></div></div></div></header><div id=body><div class=container><div class=col-group><div class=col-8 id=main><div class=res-cons><article class=post><header><h1 class=post-title>Goroutines和Channels</h1></header><date class="post-meta meta-date">2019年3月8日</date><div class=post-meta><span>|</span>
+<span class=meta-category><a href=https://www.offf.xyz/categories/golang>golang</a></span></div><div class=post-meta><span id=busuanzi_container_page_pv>|<span id=busuanzi_value_page_pv></span><span> 阅读</span></span></div><div class=post-content><blockquote><p>CSP: “顺序通信进程”(communicating sequential processes)或被简称为CSP。
+CSP是一种现代的并发编程模型，在这种编程模型中值会在不同的运行实例(goroutine)中传递。</p></blockquote><h3 id=一goroutines>一、Goroutines</h3><ol><li>定义：在GO中，每个并发的执行单元被称为一个goroutine</li><li>go语句： 在函数或方法前加上关键字go，就形成了go语句。go语句使函数或方法在新建的goroutine中执行。</li><li>程序启动时，主函数（main函数）会在main goroutine中执行。当main goroutine退出时，所有其它goroutine都会退出。</li></ol><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    <span style=color:#900;font-weight:700>f</span>() <span style=color:#998;font-style:italic>// call f(); wait for it to return
+</span><span style=color:#998;font-style:italic></span>    <span style=color:#000;font-weight:700>go</span> <span style=color:#900;font-weight:700>f</span>() <span style=color:#998;font-style:italic>// create a new goroutine that calls f(); don&#39;t wait
+</span></code></pre></div><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    <span style=color:#000;font-weight:700>func</span> <span style=color:#900;font-weight:700>main</span>() {
+        l, err <span style=color:#000;font-weight:700>:=</span> net.<span style=color:#900;font-weight:700>Listen</span>(<span style=color:#d14>&#34;tcp&#34;</span>, <span style=color:#d14>&#34;192.168.0.1:8000&#34;</span>)
+        <span style=color:#000;font-weight:700>if</span> err <span style=color:#000;font-weight:700>!=</span> <span style=color:#000;font-weight:700>nil</span> {
+            log.<span style=color:#900;font-weight:700>Fatal</span>(err)
+        }
+
+        <span style=color:#000;font-weight:700>for</span> {
+            conn, err <span style=color:#000;font-weight:700>:=</span> l.<span style=color:#900;font-weight:700>Accept</span>()
+            <span style=color:#000;font-weight:700>if</span> err <span style=color:#000;font-weight:700>!=</span> <span style=color:#000;font-weight:700>nil</span> {
+                log.<span style=color:#900;font-weight:700>Print</span>(err)
+                <span style=color:#000;font-weight:700>continue</span>
+            }
+
+            <span style=color:#000;font-weight:700>go</span> <span style=color:#900;font-weight:700>handleConn</span>(conn)
+        }
+    }
+</code></pre></div><h3 id=二channels>二、Channels</h3><ol><li>channel 是 goroutines之间通信的机制</li><li>通过make来创建一个channel</li><li>与map类似，channel也是能底层数据结构的引用，作为函数参数传递时，是传递的引用。</li><li>channel的零值为nil。</li><li>channel之间可以用 == 进行比较。</li><li>一个channel有发送和接收两个操作，都是通信行为。</li><li>发送将一个值从一个goroutine发送到另一个接收该值的goroutine。</li><li>发送和接收都使用 &lt;- 运算符号，发送时，&lt;-分割channel和要发送的值。接收时，&lt;-放在channel之前。</li><li>在关闭的channel上发送数据会引起panic, 但可以接收数据，如果被关闭的channel中没有数据，则得到零值。</li></ol><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    ch <span style=color:#000;font-weight:700>&lt;-</span> x     <span style=color:#998;font-style:italic>// a send statement
+</span><span style=color:#998;font-style:italic></span>    y <span style=color:#000;font-weight:700>:=</span> <span style=color:#000;font-weight:700>&lt;-</span>ch   <span style=color:#998;font-style:italic>// a receive expression in an assignment statement
+</span><span style=color:#998;font-style:italic></span>    <span style=color:#000;font-weight:700>&lt;-</span>ch        <span style=color:#998;font-style:italic>// a receive statement; result is discarded
+</span><span style=color:#998;font-style:italic></span>
+    <span style=color:#0086b3>close</span>(ch)   <span style=color:#998;font-style:italic>// close channel
+</span></code></pre></div><h3 id=三不带缓冲的channel>三、不带缓冲的channel</h3><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    ch = <span style=color:#0086b3>make</span>(<span style=color:#000;font-weight:700>chan</span> <span style=color:#458;font-weight:700>int</span>) <span style=color:#998;font-style:italic>// unbuffered channel
+</span><span style=color:#998;font-style:italic></span>    ch = <span style=color:#0086b3>make</span>(<span style=color:#000;font-weight:700>chan</span> <span style=color:#458;font-weight:700>int</span>, <span style=color:#099>0</span>) <span style=color:#998;font-style:italic>// unbuffered channel
+</span><span style=color:#998;font-style:italic></span>    ch = <span style=color:#0086b3>make</span>(<span style=color:#000;font-weight:700>chan</span> <span style=color:#458;font-weight:700>int</span>, <span style=color:#099>3</span>) <span style=color:#998;font-style:italic>// buffered channel with capacity 3
+</span></code></pre></div><ol><li>在无缓存的channel上进行收发操作，将会导致此goroutine阻塞，直到有另一个goroutine对该通道进行发收操作。</li><li>无缓存的channel上的收发，导致两个goroutine进行一次同步操作。所以，无缓存channel也叫同步channel。</li><li>当我们说x事件既不是在y事件之前发生也不是在y事件之后发生，我们就说x事件和y事件是并发的。</li></ol><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    <span style=color:#000;font-weight:700>func</span> <span style=color:#900;font-weight:700>main</span>() {
+        conn, err <span style=color:#000;font-weight:700>:=</span> net.<span style=color:#900;font-weight:700>Dial</span>(<span style=color:#d14>&#34;tcp&#34;</span>, <span style=color:#d14>&#34;localhost:8000&#34;</span>)
+        <span style=color:#000;font-weight:700>if</span> err <span style=color:#000;font-weight:700>!=</span> <span style=color:#000;font-weight:700>nil</span> {
+            log.<span style=color:#900;font-weight:700>Fatal</span>(err)
+        }
+
+        done <span style=color:#000;font-weight:700>:=</span> <span style=color:#0086b3>make</span>(<span style=color:#000;font-weight:700>chan</span> <span style=color:#000;font-weight:700>struct</span>{})
+        <span style=color:#000;font-weight:700>go</span> <span style=color:#000;font-weight:700>func</span>() {
+            io.<span style=color:#900;font-weight:700>Copy</span>(os.Stdout, conn) <span style=color:#998;font-style:italic>// NOTE: ignoring errors
+</span><span style=color:#998;font-style:italic></span>            log.<span style=color:#900;font-weight:700>Println</span>(<span style=color:#d14>&#34;done&#34;</span>)
+            done <span style=color:#000;font-weight:700>&lt;-</span> <span style=color:#000;font-weight:700>struct</span>{}{} <span style=color:#998;font-style:italic>// signal the main goroutine
+</span><span style=color:#998;font-style:italic></span>        }()
+        <span style=color:#900;font-weight:700>mustCopy</span>(conn, os.Stdin)
+        conn.<span style=color:#900;font-weight:700>Close</span>()
+        <span style=color:#000;font-weight:700>&lt;-</span>done <span style=color:#998;font-style:italic>// wait for background goroutine to finish
+</span><span style=color:#998;font-style:italic></span>    }
+</code></pre></div><h3 id=四串联的-channels-pipeline>四、串联的 Channels （Pipeline）</h3><ol><li>一个 channels 的输出作为另一个 channels 的输入。这种串联就是管道（pipeline）。</li><li>适时关闭channel，可以使接收都得到通知。</li><li>重复关闭一个chan会导致panic</li><li>关闭值为nil的chan会导致panic</li><li>关闭一个chan会触发广播机制</li></ol><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    <span style=color:#000;font-weight:700>func</span> <span style=color:#900;font-weight:700>main</span>() {
+        naturals <span style=color:#000;font-weight:700>:=</span> <span style=color:#0086b3>make</span>(<span style=color:#000;font-weight:700>chan</span> <span style=color:#458;font-weight:700>int</span>)
+        squares <span style=color:#000;font-weight:700>:=</span> <span style=color:#0086b3>make</span>(<span style=color:#000;font-weight:700>chan</span> <span style=color:#458;font-weight:700>int</span>)
+
+        <span style=color:#000;font-weight:700>go</span> <span style=color:#000;font-weight:700>func</span>() {
+            <span style=color:#000;font-weight:700>for</span> x <span style=color:#000;font-weight:700>:=</span> <span style=color:#099>0</span>; ; x<span style=color:#000;font-weight:700>++</span> {
+                naturals <span style=color:#000;font-weight:700>&lt;-</span> x
+            }
+        }()
+
+        <span style=color:#000;font-weight:700>go</span> <span style=color:#000;font-weight:700>func</span>() {
+            <span style=color:#000;font-weight:700>for</span> {
+                x <span style=color:#000;font-weight:700>:=</span> <span style=color:#000;font-weight:700>&lt;-</span>naturals
+                squares <span style=color:#000;font-weight:700>&lt;-</span> x <span style=color:#000;font-weight:700>*</span> x
+            }
+        }()
+
+        <span style=color:#000;font-weight:700>for</span> {
+            fmt.<span style=color:#900;font-weight:700>Println</span>(<span style=color:#000;font-weight:700>&lt;-</span>squares)
+        }
+    }
+
+    <span style=color:#998;font-style:italic>// 有限个数的x
+</span><span style=color:#998;font-style:italic></span>    <span style=color:#000;font-weight:700>func</span> <span style=color:#900;font-weight:700>main</span>() {
+        naturals <span style=color:#000;font-weight:700>:=</span> <span style=color:#0086b3>make</span>(<span style=color:#000;font-weight:700>chan</span> <span style=color:#458;font-weight:700>int</span>)
+        squares <span style=color:#000;font-weight:700>:=</span> <span style=color:#0086b3>make</span>(<span style=color:#000;font-weight:700>chan</span> <span style=color:#458;font-weight:700>int</span>)
+
+        <span style=color:#000;font-weight:700>go</span> <span style=color:#000;font-weight:700>func</span>() {
+            <span style=color:#000;font-weight:700>for</span> x <span style=color:#000;font-weight:700>:=</span> <span style=color:#099>0</span>; x &lt; <span style=color:#099>10000</span>; x<span style=color:#000;font-weight:700>++</span> {
+                naturals <span style=color:#000;font-weight:700>&lt;-</span> x
+            }
+
+            <span style=color:#0086b3>close</span>(naturals)
+        }()
+
+        <span style=color:#000;font-weight:700>go</span> <span style=color:#000;font-weight:700>func</span>() {
+            <span style=color:#000;font-weight:700>for</span> x <span style=color:#000;font-weight:700>:=</span> <span style=color:#000;font-weight:700>range</span> naturals {
+                squares <span style=color:#000;font-weight:700>&lt;-</span> x<span style=color:#000;font-weight:700>*</span>x
+            }
+
+            <span style=color:#0086b3>close</span>(squares)
+        }()
+
+        <span style=color:#000;font-weight:700>for</span> x <span style=color:#000;font-weight:700>:=</span> <span style=color:#000;font-weight:700>range</span> squares {
+            fmt.<span style=color:#900;font-weight:700>Println</span>(x)
+        }
+    }
+
+</code></pre></div><h3 id=五单方向的-channel>五、单方向的 Channel</h3><ol><li>chan&lt;- type, 表示只发送type类型数据的单向channel</li><li>&lt;-chan type, 表示只接收type类型数据的单向channel</li><li>没有将单向型chan转换为双向chan的语法</li></ol><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    <span style=color:#000;font-weight:700>func</span> <span style=color:#900;font-weight:700>main</span>() {
+        naturals <span style=color:#000;font-weight:700>:=</span> <span style=color:#0086b3>make</span>(<span style=color:#000;font-weight:700>chan</span> <span style=color:#458;font-weight:700>int</span>)
+        squares <span style=color:#000;font-weight:700>:=</span> <span style=color:#0086b3>make</span>(<span style=color:#000;font-weight:700>chan</span> <span style=color:#458;font-weight:700>int</span>)
+
+        <span style=color:#000;font-weight:700>go</span> <span style=color:#900;font-weight:700>counter</span>(naturals)
+        <span style=color:#000;font-weight:700>go</span> <span style=color:#900;font-weight:700>squarer</span>(naturals, squares)
+        <span style=color:#900;font-weight:700>printer</span>(squares)
+    }
+
+    <span style=color:#000;font-weight:700>func</span> <span style=color:#900;font-weight:700>counter</span>(out <span style=color:#000;font-weight:700>chan</span><span style=color:#000;font-weight:700>&lt;-</span> <span style=color:#458;font-weight:700>int</span>) {
+        <span style=color:#000;font-weight:700>for</span> x <span style=color:#000;font-weight:700>:=</span> <span style=color:#099>0</span>; x &lt; <span style=color:#099>10000</span>; x<span style=color:#000;font-weight:700>++</span> {
+            out <span style=color:#000;font-weight:700>&lt;-</span> x
+        }
+
+        <span style=color:#0086b3>close</span>(out)
+    }
+
+    <span style=color:#000;font-weight:700>func</span> <span style=color:#900;font-weight:700>squarer</span>(in <span style=color:#000;font-weight:700>&lt;-</span><span style=color:#000;font-weight:700>chan</span> <span style=color:#458;font-weight:700>int</span>, out <span style=color:#000;font-weight:700>chan</span><span style=color:#000;font-weight:700>&lt;-</span> <span style=color:#458;font-weight:700>int</span>) {
+        <span style=color:#000;font-weight:700>for</span> x <span style=color:#000;font-weight:700>:=</span> <span style=color:#000;font-weight:700>range</span> in {
+            out <span style=color:#000;font-weight:700>&lt;-</span> x<span style=color:#000;font-weight:700>*</span>x
+        }
+
+        <span style=color:#0086b3>close</span>(out)
+    }
+
+    <span style=color:#000;font-weight:700>func</span> <span style=color:#900;font-weight:700>printer</span>(in <span style=color:#000;font-weight:700>&lt;-</span><span style=color:#000;font-weight:700>chan</span> <span style=color:#458;font-weight:700>int</span>) {
+        <span style=color:#000;font-weight:700>for</span> x <span style=color:#000;font-weight:700>:=</span> <span style=color:#000;font-weight:700>range</span> in {
+            fmt.<span style=color:#900;font-weight:700>Println</span>(x)
+        }
+    }
+</code></pre></div><h3 id=六带缓存的-channels>六、带缓存的 Channels</h3></div><div class=post-archive><h2>See Also</h2><ul class=listing><li><a href=/gopl-ch01/>Golang 入门</a></li><li><a href=/gopl-ch07/>Golang接口</a></li><li><a href=/gopl-ch00/>Golang简介整理</a></li><li><a href=/the-go-programming-language/>The Go Programming Language</a></li></ul></div><div class="post-meta meta-tags"><ul class=clearfix><li><a href=https://www.offf.xyz/tags/golang>golang</a></li></ul></div></article></div></div><div id=secondary><section class=widget><form id=search action=https://www.offf.xyz/search method=get accept-charset=utf-8 target=_blank _lpchecked=1><input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch value=https://www.offf.xyz/>
+<button type=submit class="submit icon-search"></button></form></section><section class=widget><h3 class=widget-title>最近文章</h3><ul class=widget-list></ul></section><section class=widget><h3 class=widget-title>分类</h3><ul class=widget-list><li><a href=https://www.offf.xyz/categories/c++/>c++ (1)</a></li><li><a href=https://www.offf.xyz/categories/c++11/>c++11 (5)</a></li><li><a href=https://www.offf.xyz/categories/curl/>curl (1)</a></li><li><a href=https://www.offf.xyz/categories/editor/>editor (1)</a></li><li><a href=https://www.offf.xyz/categories/golang/>golang (10)</a></li><li><a href=https://www.offf.xyz/categories/shell/>shell (2)</a></li></ul></section><section class=widget><h3 class=widget-title>标签</h3><div class=tagcloud><a href=https://www.offf.xyz/tags/c++/>c++</a>
+<a href=https://www.offf.xyz/tags/c++11/>c++11</a>
+<a href=https://www.offf.xyz/tags/curl/>curl</a>
+<a href=https://www.offf.xyz/tags/editor/>editor</a>
+<a href=https://www.offf.xyz/tags/golang/>golang</a>
+<a href=https://www.offf.xyz/tags/shell/>shell</a></div></section><section class=widget><h3 class=widget-title>其它</h3><ul class=widget-list><li><a href=https://www.offf.xyz/index.xml>文章 RSS</a></li></ul></section></div></div></div></div><footer id=footer><div class=container>&copy; 2020 <a href=https://www.offf.xyz/>A Crazy Cat By Gray Lnil</a>.</div></footer><script type=text/javascript>(function(){$("pre code").parent().addClass("line-numbers")}());window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:true}};</script><script type=text/javascript src=/js/prism.js async></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script><a id=rocket href=#top></a><script type=text/javascript src="/js/totop.js?v=0.0.0" async></script><script type=text/javascript src=//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js async></script><script type=text/javascript>(function(){if(typeof self==='undefined'||!self.Prism||!self.document){return;}
+if(!Prism.plugins.toolbar){console.warn('Copy to Clipboard plugin loaded before Toolbar plugin.');return;}
+var ClipboardJS=window.ClipboardJS||undefined;if(!ClipboardJS&&typeof require==='function'){ClipboardJS=require('clipboard');}
+var callbacks=[];if(!ClipboardJS){var script=document.createElement('script');var head=document.querySelector('head');script.onload=function(){ClipboardJS=window.ClipboardJS;if(ClipboardJS){while(callbacks.length){callbacks.pop()();}}};script.src='https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js';head.appendChild(script);}
+Prism.plugins.toolbar.registerButton('copy-to-clipboard',function(env){var linkCopy=document.createElement('button');linkCopy.textContent='复制代码';if(!ClipboardJS){callbacks.push(registerClipboard);}else{registerClipboard();}
+return linkCopy;function registerClipboard(){var clip=new ClipboardJS(linkCopy,{'text':function(){return env.code;}});clip.on('success',function(){linkCopy.textContent='复制成功!';resetText();});clip.on('error',function(){linkCopy.textContent='按 Ctrl+C 复制';resetText();});}
+function resetText(){setTimeout(function(){linkCopy.textContent='复制代码';},5000);}});})();</script></body></html>

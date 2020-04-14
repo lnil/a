@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>A Crazy Cat</title><link>https://www.offf.xyz/</link><description>Recent content on A Crazy Cat</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Fri, 06 Mar 2020 13:37:21 +0800</lastBuildDate><atom:link href="https://www.offf.xyz/index.xml" rel="self" type="application/rss+xml"/><item><title>VIM使用技巧</title><link>https://www.offf.xyz/vim-magic/</link><pubDate>Fri, 06 Mar 2020 13:37:21 +0800</pubDate><guid>https://www.offf.xyz/vim-magic/</guid><description> 编写Makefile文件时，避免Tab转换为4个空格 先敲ctrl-v组合键，再敲tab键，这样就不会被转换成空格了</description></item><item><title>Golang方法</title><link>https://www.offf.xyz/gopl-ch06/</link><pubDate>Sat, 16 Mar 2019 23:55:21 +0800</pubDate><guid>https://www.offf.xyz/gopl-ch06/</guid><description>Go语言借助方法来实现OOP
+Go语言OOP的两个关键是封装和组合
+一、方法 方法是属于某种类型的，方法可以被声明到任意类型，只要不是一个指针或者一个interface。 值类型和引用类型：
+（1）值类型包括：基本数据类型int系列、float系列、bool、string、数组和结构体；
+（2）引用类型：指针、slice切片、map、管道channel、interface等；
+值类型和引用类型的区别： （1）值类型，变量直接存储，内存通常在栈中分配；
+（2）引用类型：变量存储的是一个地址，这个地址对应的空间才是真正存储的数据值，内存通常在堆上分配，当没有任何变量引用这个地址时，此地址对应的数据空间就是一个垃圾，由GC来回收；
+type Point struct {
+x, y float64
+}
+//function func Distance(p, q Point) float64 {
+return math.Hypot(q.x-p.x, q.x-p.x)
+}
+//method
+//p为方法的接收器(receiver)，接收器的名字建议用类型的第一个字母或第2个word的第一个字母
+func (p Point) Distance(q Point) float64 {
+return math.Hypot(q.x-p.x, q.y-p.y)
+}
+p := Point{1, 2}
+q := Point{4, 6}
+fmt.Println(Distance(p, q)) // &amp;#34;5&amp;#34;, function call
+fmt.Println(p.Distance(q)) // &amp;#34;5&amp;#34;, method call
+//p.Distance被称为选择器
+//计算线段的长度
+// A Path is a journey connecting the points with straight lines.</description></item><item><title>Golang函数</title><link>https://www.offf.xyz/gopl-ch05/</link><pubDate>Sat, 16 Mar 2019 23:37:21 +0800</pubDate><guid>https://www.offf.xyz/gopl-ch05/</guid><description>一、函数定义 函数声明包括函数名、形式参数列表、返回值列表（可省略）以及函数体。
+func name(parameter-list) (result-list) {
+body
+}
+func add(x int, y int) int {return x + y}
+func sub(x, y int) (z int) { z = x - y; return}
+func first(x int, _ int) int { return x }
+func zero(int, int) int { return 0 }
+fmt.Printf(&amp;#34;%T\n&amp;#34;, add) // &amp;#34;func(int, int) int&amp;#34;
+fmt.Printf(&amp;#34;%T\n&amp;#34;, sub) // &amp;#34;func(int, int) int&amp;#34;
+fmt.Printf(&amp;#34;%T\n&amp;#34;, first) // &amp;#34;func(int, int) int&amp;#34;
+fmt.Printf(&amp;#34;%T\n&amp;#34;, zero) // &amp;#34;func(int, int) int&amp;#34;
+二、递归 函数可以调用函数自身。
+func f(n int) int {
+if n == 1 || n == 2 {
+return 1
+}
+return f(n-1) + f(n-2)
+}
+三、多返回值函数 Go可以返回多个值给调用者</description></item><item><title>linux 清除共享内存</title><link>https://www.offf.xyz/sh-ipcrm/</link><pubDate>Fri, 15 Mar 2019 23:37:21 +0800</pubDate><guid>https://www.offf.xyz/sh-ipcrm/</guid><description>#!/bin/bash
+shmid=$(ipcs -m | grep -vE &amp;#39;(Shared | shmid)&amp;#39; | awk &amp;#39;{print $2}&amp;#39;)
+for id in $shmid; do
+ipcrm -m $id
+done</description></item><item><title>Golang复合类型</title><link>https://www.offf.xyz/gopl-ch04/</link><pubDate>Wed, 13 Mar 2019 13:37:21 +0800</pubDate><guid>https://www.offf.xyz/gopl-ch04/</guid><description>简述 基本类型是Go语言世界的原子，复合类型则是分子。
+数组 数组是固定长度的序列。因此，其很少直接使用。 与C语言数组特性类似。
+var a [3]int //其中[3]int为数组类型
+fmt.Println(a[0])
+fmt.Println(a[len(a) - 1])
+var b [3]int = [3]int{1, 2, 3}
+var c [3]int = [3]int{1, 2}
+var d = [...]int{1, 2, 3, 4} // len = 4
+q := [...]int{1, 2}
+//指定一个索引和对应值列表的方式初始化
+type Currency int
+const (
+USD Currency = iota // 美元
+EUR // 欧元
+GBP // 英镑
+RMB // 人民币
+)
+symbol := [...]string{USD: &amp;#34;$&amp;#34;, EUR: &amp;#34;€&amp;#34;, GBP: &amp;#34;￡&amp;#34;, RMB: &amp;#34;￥&amp;#34;}
+fmt.</description></item><item><title>Golang基础数据类型</title><link>https://www.offf.xyz/gopl-ch03/</link><pubDate>Tue, 12 Mar 2019 23:37:21 +0800</pubDate><guid>https://www.offf.xyz/gopl-ch03/</guid><description>整型 一般整型
+int8 int16 int32 int64
+uint8 uint16 uint32 uint64
+分别对应8、16、32、64bit的数 特别的整型 Unicode字符rune类型是和int32等价的类型，通常用于表示一个Unicode码点。因此rune和int32可以互换使用。
+byte类型等价于uint8类型，byte用于强调数据的原始性。
+uintptr用来存放指针，多用于底层编程。
+int和int32大小相同，但是，是两个不同的类型。
+取模的结果总是与被取模数的符号相同
+fmt.Println(5%3) //2
+fmt.Println(5%-3) //2
+fmt.Println(-5%3) //-2
+fmt.Println(-5%-3) //-2
+符点数 float32、float64
+通常应该优先使用float64类型，因为float32类型的累计计算误差很容易扩散。
+复数 complex64、complex128
+var x complex128 = complex(1, 2) // 1+2i
+var y complex128 = complex(3, 4) // 3+4i
+fmt.Println(x*y) // &amp;#34;(-5+10i)&amp;#34;
+fmt.Println(real(x*y)) // &amp;#34;-5&amp;#34; //取实部
+fmt.Println(imag(x*y)) // &amp;#34;10&amp;#34; //取虚部
+布尔型 true/false
+// btoi returns 1 if b is true and 0 if false.</description></item><item><title>linux生成临时文件方法</title><link>https://www.offf.xyz/sh-tmpfile/</link><pubDate>Tue, 12 Mar 2019 23:37:21 +0800</pubDate><guid>https://www.offf.xyz/sh-tmpfile/</guid><description>工具命令 mktemp 命令 mktemp 默认在/tmp/目录下生成tmp.xxxxxxxxx文件 trap 命令 trap命令用于指定在接收到信号后将要采取的动作 trap command/function signal 示例 #!/bin/sh
+# clear while this script exits.
+trap &amp;#39;rm -f &amp;#34;$TMPFILE&amp;#34;&amp;#39; EXIT
+TMPFILE=$(mktemp -p `pwd`) || exit 1
+echo &amp;#34;temp file is $TMPFILE&amp;#34;</description></item><item><title>左值和右值</title><link>https://www.offf.xyz/cpp11-lval-rval/</link><pubDate>Mon, 11 Mar 2019 23:37:21 +0800</pubDate><guid>https://www.offf.xyz/cpp11-lval-rval/</guid><description>本文整理自网文，如有冒犯，请告知删除。 左值(lvalue)和右值(rvalue) 左值(lvalue)和右值(rvalue)是c/c++中的基础概念。 简单理解为：有名字的是左值，没有名字的是右值。
+C C语言中，左、右值均可为变量或表达式 C语言中，左值可出现在=号左边，也可出现在=号右边 C语言中，右值只能出现在=号右边 int x, y;
+x = 1;
+y = 2;
+x = y;
+y = x;
+2 = x; //err
+x,y为左值，2为右值
+CPP CPP语言中，一个表达式会产生一个左值，或者一个右值，前者称为左值表达式，后者称为右值表达式。 CPP语言中，对于基本类型，左值和右值概念与C语言相同。 CPP语言中，对于自定义类型，右值允许通过它的成员函数进行修改。 class A {
+public:
+A(int i) : _i(i) {}
+A&amp;amp; operator=(const A&amp;amp; other) {
+_i = other._i;
+return *this;
+}
+void set(int i) {
+_i = i;
+}
+int get() {
+return _i;
+}
+private:
+int _i;
+};
+int main() {
+A a(5);
+auto f = [&amp;amp;] () -&amp;gt;A {
+return a;
+}
+f().</description></item><item><title>lambda函数</title><link>https://www.offf.xyz/cpp11-lambda/</link><pubDate>Sun, 10 Mar 2019 23:37:21 +0800</pubDate><guid>https://www.offf.xyz/cpp11-lambda/</guid><description>格式 [捕捉列表] (参数) mutable -&amp;gt; 返回值类型 {函数体}
+lambda 表达式是一种匿名函数，即没有函数名的函数；该匿名函数是由数学中的λ演算而来的。
+种类 []{} 最简单的lambda函数 [var] 表示以值传递方式捕捉变量var int main() {
+int x = 5;
+auto f = [x]{
+//x is read-only
+int y;
+y = x + 1;
+std::cout &amp;lt;&amp;lt; y &amp;lt;&amp;lt; std::endl;
+};
+f();
+return 0;
+}
+$&amp;gt;&amp;gt; 6
+[=] 表示值传递捕捉所有父作用域变量 int main() {
+int x = 5;
+int y = 6;
+auto f = [=]{
+//x,y is read-only
+int z;
+z = x + y;
+std::cout &amp;lt;&amp;lt; z &amp;lt;&amp;lt; std::endl;
+};
+f();
+return 0;
+}
+$&amp;gt;&amp;gt; 11
+[&amp;amp;var] 表示以引用传递方式捕捉变量var int main() {
+int x = 5;
+auto f = [&amp;amp;x]{
+x++;
+};
+f();
+std::cout &amp;lt;&amp;lt; x &amp;lt;&amp;lt; std::endl;
+return 0;
+}
+$&amp;gt;&amp;gt; 6
+[&amp;amp;] 表示引用传递捕捉所有父作用域变量 int main() {
+int x = 5;
+int y = 0;
+auto f = [&amp;amp;]{
+x++;
+y++;
+};
+f();
+std::cout &amp;lt;&amp;lt; x &amp;lt;&amp;lt; std::endl;
+std::cout &amp;lt;&amp;lt; y &amp;lt;&amp;lt; std::endl;
+return 0;
+}
+$&amp;gt;&amp;gt; 6
+$&amp;gt;&amp;gt; 1
+[this] 表示值传递方式捕捉当前的this指针 class A {
+public:
+void foo() {
+auto f = [this] {
+bar();
+};
+f();
+}
+void bar() {
+std::cout &amp;lt;&amp;lt; &amp;#34;bar&amp;#34; &amp;lt;&amp;lt; std::endl;
+}
+};
+int main() {
+A a;
+a.</description></item><item><title>c++11的weak_ptr</title><link>https://www.offf.xyz/cpp11-weak_ptr/</link><pubDate>Sat, 09 Mar 2019 23:37:21 +0800</pubDate><guid>https://www.offf.xyz/cpp11-weak_ptr/</guid><description>why? class A {
+public:
+A() { std::cout &amp;lt;&amp;lt; &amp;#34;A ctor&amp;#34; &amp;lt;&amp;lt; std::endl;}
+~A() { std::cout &amp;lt;&amp;lt; &amp;#34;A dtor&amp;#34; &amp;lt;&amp;lt; std::endl; }
+std::shared_ptr&amp;lt;B&amp;gt; spB;
+};
+class B {
+public:
+B() { std::cout &amp;lt;&amp;lt; &amp;#34;B ctor&amp;#34; &amp;lt;&amp;lt; std::endl;}
+~B() { std::cout &amp;lt;&amp;lt; &amp;#34;B dtor&amp;#34; &amp;lt;&amp;lt; std::endl; }
+std::shared_ptr&amp;lt;A&amp;gt; spA;
+};
+int main() {
+std::shared_ptr&amp;lt;A&amp;gt; spA = std::make_shared&amp;lt;A&amp;gt;();
+std::shared_ptr&amp;lt;B&amp;gt; spB = std::make_shared&amp;lt;B&amp;gt;();
+spA-&amp;gt;spB_ = spB;
+spB-&amp;gt;spA_ = spA;
+return 0;
+}
+output:
+A ctor
+B ctor
+从以上结果可以看出，A、B均未释放，造成内存泄漏。 根本原因在于，A、B之间的循环引用。
+how? weak_ptr用来与shared_ptr共同使用，避免内存泄漏。
+class A {
+public:
+A() { std::cout &amp;lt;&amp;lt; &amp;#34;A ctor&amp;#34; &amp;lt;&amp;lt; std::endl;}
+~A() { std::cout &amp;lt;&amp;lt; &amp;#34;A dtor&amp;#34; &amp;lt;&amp;lt; std::endl; }
+void foo() {
+std::cout &amp;lt;&amp;lt; &amp;#34;I am foo&amp;#34; &amp;lt;&amp;lt; std::endl;
+}
+std::weak_ptr&amp;lt;B&amp;gt; wpB_;
+};
+class B {
+public:
+B() { std::cout &amp;lt;&amp;lt; &amp;#34;B ctor&amp;#34; &amp;lt;&amp;lt; std::endl;}
+~B() { std::cout &amp;lt;&amp;lt; &amp;#34;B dtor&amp;#34; &amp;lt;&amp;lt; std::endl; }
+std::weak_ptr&amp;lt;A&amp;gt; wpA_;
+};
+int main() {
+std::shared_ptr&amp;lt;A&amp;gt; spA = std::make_shared&amp;lt;A&amp;gt;();
+std::shared_ptr&amp;lt;B&amp;gt; spB = std::make_shared&amp;lt;B&amp;gt;();
+spA-&amp;gt;wpB_ = spB;
+spB-&amp;gt;wpA_ = spA;
+spB-&amp;gt;wpA_.</description></item><item><title>Golang 程序结构</title><link>https://www.offf.xyz/gopl-ch02/</link><pubDate>Sat, 09 Mar 2019 23:37:21 +0800</pubDate><guid>https://www.offf.xyz/gopl-ch02/</guid><description>关键字 go中含有25个关键字
+break default func interface select
+case defer go map struct
+chan else goto package switch
+const fallthrough if range type
+continue for import return var
+此外，还有大约30多个预定义的名字 内建常量: true false iota nil
+内建类型: int int8 int16 int32 int64
+uint uint8 uint16 uint32 uint64 uintptr
+float32 float64 complex128 complex64
+bool byte rune string error
+内建函数: make len cap new append copy close delete
+complex real imag
+panic recover
+名字大小写 大写的名字表明是可导出的，即可被其它包访问，如fmt包中的Println 小写的名字只能在包内使用
+名字长度 一般名字的长度是没有限制的。 Go提倡短小的名称，如表示索引，定义为i,而不是index等 当作用域范围较大或生命周期较长的变量，采用较长的名字可能会更好。
+声明 主要有4种类型的声明语句：
+var(变量)
+var 变量名字 类型 = 表达式</description></item><item><title>Goroutines和Channels</title><link>https://www.offf.xyz/gopl-ch08/</link><pubDate>Fri, 08 Mar 2019 23:37:21 +0800</pubDate><guid>https://www.offf.xyz/gopl-ch08/</guid><description>CSP: “顺序通信进程”(communicating sequential processes)或被简称为CSP。 CSP是一种现代的并发编程模型，在这种编程模型中值会在不同的运行实例(goroutine)中传递。
+一、Goroutines 定义：在GO中，每个并发的执行单元被称为一个goroutine go语句： 在函数或方法前加上关键字go，就形成了go语句。go语句使函数或方法在新建的goroutine中执行。 程序启动时，主函数（main函数）会在main goroutine中执行。当main goroutine退出时，所有其它goroutine都会退出。 f() // call f(); wait for it to return
+go f() // create a new goroutine that calls f(); don&amp;#39;t wait
+func main() {
+l, err := net.Listen(&amp;#34;tcp&amp;#34;, &amp;#34;192.168.0.1:8000&amp;#34;)
+if err != nil {
+log.Fatal(err)
+}
+for {
+conn, err := l.Accept()
+if err != nil {
+log.Print(err)
+continue
+}
+go handleConn(conn)
+}
+}
+二、Channels channel 是 goroutines之间通信的机制 通过make来创建一个channel 与map类似，channel也是能底层数据结构的引用，作为函数参数传递时，是传递的引用。 channel的零值为nil。 channel之间可以用 == 进行比较。 一个channel有发送和接收两个操作，都是通信行为。 发送将一个值从一个goroutine发送到另一个接收该值的goroutine。 发送和接收都使用 &amp;lt;- 运算符号，发送时，&amp;lt;-分割channel和要发送的值。接收时，&amp;lt;-放在channel之前。 在关闭的channel上发送数据会引起panic, 但可以接收数据，如果被关闭的channel中没有数据，则得到零值。 ch &amp;lt;- x // a send statement
+y := &amp;lt;-ch // a receive expression in an assignment statement
+&amp;lt;-ch // a receive statement; result is discarded
+close(ch) // close channel
+三、不带缓冲的channel ch = make(chan int) // unbuffered channel
+ch = make(chan int, 0) // unbuffered channel
+ch = make(chan int, 3) // buffered channel with capacity 3
+在无缓存的channel上进行收发操作，将会导致此goroutine阻塞，直到有另一个goroutine对该通道进行发收操作。 无缓存的channel上的收发，导致两个goroutine进行一次同步操作。所以，无缓存channel也叫同步channel。 当我们说x事件既不是在y事件之前发生也不是在y事件之后发生，我们就说x事件和y事件是并发的。 func main() {
+conn, err := net.</description></item><item><title>c++11的auto关键字</title><link>https://www.offf.xyz/cpp11-auto/</link><pubDate>Fri, 08 Mar 2019 13:37:21 +0800</pubDate><guid>https://www.offf.xyz/cpp11-auto/</guid><description>c++11之前 c++11之前，auto关键字用来表示变量的存储期
+类型推断 变量声明时可以用auto,编译器会自动推断数据类型
+auto i = 10;
+std::vector&amp;lt;int&amp;gt; v;
+for (auto it = v.begin(); it != v.end(); it++) {
+std::cout &amp;lt;&amp;lt; *v &amp;lt;&amp;lt; std::endl;
+}
+可见，auto使代码更简洁，增强了可读性。</description></item><item><title>c++11的shared_ptr</title><link>https://www.offf.xyz/cpp11-shared-ptr/</link><pubDate>Fri, 08 Mar 2019 13:37:21 +0800</pubDate><guid>https://www.offf.xyz/cpp11-shared-ptr/</guid><description>what? 智能指针是基于RAII思想的c++类（类模板）
+why? 智能指针帮助c++使用者更好的管理内存
+how? 使用方法
+eg:
+std::shared_ptr&amp;lt;int&amp;gt; foo = std::make_shared&amp;lt;int&amp;gt; (10);
+// same as:
+//std::shared_ptr&amp;lt;int&amp;gt; foo (new int(10));
+std::cout &amp;lt;&amp;lt; &amp;#34;*foo: &amp;#34; &amp;lt;&amp;lt; *foo &amp;lt;&amp;lt; std::endl;
+eg:
+class A {
+public:
+A(int i) : m_i(i) { }
+void foo() {
+std::cout &amp;lt;&amp;lt; m_i &amp;lt;&amp;lt; std::endl;
+}
+private:
+int m_i;
+};
+typedef std::shared_ptr&amp;lt;A&amp;gt; A_PTR;
+A_PTR aPtr = std::make_shared&amp;lt;A&amp;gt;(10);
+std::cout &amp;lt;&amp;lt; aPtr-&amp;gt;foo() &amp;lt;&amp;lt; std::endl;</description></item><item><title>Golang 入门</title><link>https://www.offf.xyz/gopl-ch01/</link><pubDate>Fri, 08 Mar 2019 13:37:21 +0800</pubDate><guid>https://www.offf.xyz/gopl-ch01/</guid><description>语言支持 Go语言原生支持Unicode，它可以处理全世界任何语言的文本。
+语言组织 Go语言代码由包组织而成 一个目录定义一个包，目录中存放N个.go源码包 包通过import关键字导入到其它的包中使用 Go采用静态编译，将所有第三方依赖打包编译为一个光秃秃的可执行文件 Go语言只有一种循环语言，就是for语句 printf常用转换字符 %d 十进制整数
+%x, %o, %b 十六进制，八进制，二进制整数。
+%f, %g, %e 浮点数： 3.141593 3.141592653589793 3.141593e+00
+%t 布尔：true或false
+%c 字符（rune） (Unicode码点)
+%s 字符串
+%q 带双引号的字符串&amp;quot;abc&amp;quot;或带单引号的字符'c'
+%v 变量的自然形式（natural format）
+%T 变量的类型
+%% 字面上的百分号标志（无操作数）</description></item><item><title>Golang接口</title><link>https://www.offf.xyz/gopl-ch07/</link><pubDate>Wed, 06 Mar 2019 13:37:21 +0800</pubDate><guid>https://www.offf.xyz/gopl-ch07/</guid><description>一、概念 接口类型是一种抽象的类型。它只展示出类型的方法，不做具体的实现。
+//
+package fmt
+func Fprintf(w io.Writer, format string, args ...interface{}) (int, error)
+func Printf(format string, args ...interface{}) (int, error) {
+return Fprintf(os.Stdout, format, args...)
+}
+func Sprintf(format string, args ...interface{}) string {
+var buf bytes.Buffer
+Fprintf(&amp;amp;buf, format, args...)
+return buf.String()
+}
+//io.Writer为接口类型
+package io
+// Writer is the interface that wraps the basic Write method.
+type Writer interface {
+Write(p []byte) (n int, err error)
+}
+//io.Writer实现示例
+type ByteCounter int
+func (c *ByteCounter) Write(p []byte) (int, error) {
+*c += ByteCounter(len(p)) // convert int to ByteCounter
+return len(p), nil
+}
+var c ByteCounter
+c.</description></item><item><title>Golang简介整理</title><link>https://www.offf.xyz/gopl-ch00/</link><pubDate>Wed, 06 Mar 2019 13:37:21 +0800</pubDate><guid>https://www.offf.xyz/gopl-ch00/</guid><description> B语言 -&amp;gt; C语言 -&amp;gt; Go语言，Go语言被称为21世纪的C语言。 没有隐式的数值转换 没有构造函数和析构函数 没有运算符重载 没有默认参数 没有继承 没有泛型 没有异常 没有宏 没有函数修饰 更没有线程局部存储。</description></item><item><title>The Go Programming Language</title><link>https://www.offf.xyz/the-go-programming-language/</link><pubDate>Tue, 05 Mar 2019 13:37:21 +0800</pubDate><guid>https://www.offf.xyz/the-go-programming-language/</guid><description>1-5: 基础部分 6: 方法 7: 接口 8: CSP概念的并发编程 9: 共享变量的并发编程 10: 包的机制和结构 11: 单元测试 12: 反射 13: 底层编程</description></item><item><title>curl命令行</title><link>https://www.offf.xyz/curl-cmd/</link><pubDate>Mon, 04 Mar 2019 13:37:21 +0800</pubDate><guid>https://www.offf.xyz/curl-cmd/</guid><description>GET请求 GET请求只需要在curl命令后加待请求的URL即可。
+curl url
+eg: curl &amp;lsquo;http://github.com&amp;rsquo; POST请求 POST请求格式稍显复杂
+curl -H &amp;ldquo;Content-Type: application/json&amp;rdquo; -X POST &amp;ndash;data &amp;lsquo;json 报文&amp;rsquo; url
+eg: curl -H &amp;ldquo;Content-Type: application/json&amp;rdquo; -X POST &amp;ndash;data &amp;lsquo;{&amp;ldquo;app: &amp;ldquo;curl&amp;rdquo;}&amp;rsquo; http://google.com 过程时间 计算整个过程时间:
+-w %{time_total}
+其它时间： -w：按照后面的格式写出rt time_namelookup：DNS 解析域名[www.tn.com]的时间 time_commect：client和server端建立TCP 连接的时间 time_starttransfer：从client发出请求；到web的server 响应第一个字节的时间 time_total：client发出请求；到web的server发送回所有的响应数据的时间 speed_download：下周速度 单位 byte/s
+eg: curl -o /dev/null -s -w time_namelookup:&amp;quot;\t&amp;rdquo;%{time_namelookup}&amp;quot;\n&amp;quot;time_connect:&amp;quot;\t\t&amp;rdquo;%{time_connect}&amp;quot;\n&amp;quot;time_appconnect:&amp;quot;\t&amp;rdquo;%{time_appconnect}&amp;quot;\n&amp;quot;time_pretransfer:&amp;quot;\t&amp;rdquo;%{time_pretransfer}&amp;quot;\n&amp;quot;time_starttransfer:&amp;quot;\t&amp;rdquo;%{time_starttransfer}&amp;quot;\n&amp;quot;time_total:&amp;quot;\t\t&amp;rdquo;%{time_total}&amp;quot;\n&amp;quot;time_redirect:&amp;quot;\t\t&amp;rdquo;%{time_redirect}&amp;quot;\n&amp;rdquo; -H &amp;ldquo;Content-Type: application/json&amp;rdquo; -X POST &amp;ndash;data &amp;lsquo;json data&amp;rsquo; url</description></item><item><title>c++ noncopyable 类</title><link>https://www.offf.xyz/cpp-noncopyable/</link><pubDate>Tue, 08 Jan 2019 23:37:21 +0800</pubDate><guid>https://www.offf.xyz/cpp-noncopyable/</guid><description>一、noncopyable类作用 当类实现者不想让调用者拷贝或赋值构造类对象时，继承noncopyable类可达到此目的。
+二、noncopyable类实现 class noncopyable
+{
+protected:
+noncopyable() {}
+~noncopyable() {}
+private:
+noncopyable(const noncopyable&amp;amp;);
+const noncopyable&amp;amp; operator=(const noncopyable&amp;amp;);
+};
+// c++11 实现方法
+class noncopyable
+{
+protected:
+noncopyable() = default;
+~noncopyable() = default;
+private:
+noncopyable(const noncopyable&amp;amp;) = delete;
+const noncopyable&amp;amp; operator=(const noncopyable&amp;amp;) = delete;
+};
+三、原理 派生类调用拷贝构造函数或赋值构造函数时， 会调用基类(noncopyable)的拷贝构造函数或赋值构造函数
+class A : public noncopyable {
+public:
+A(int i) {
+i_ = i;
+}
+private:
+int i_;
+};
+//调用
+A a1(55);
+A a2(a1); //error;</description></item></channel></rss>

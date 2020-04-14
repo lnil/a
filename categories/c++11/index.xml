@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>c++11 on A Crazy Cat</title><link>https://www.offf.xyz/categories/c++11/</link><description>Recent content in c++11 on A Crazy Cat</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Mon, 11 Mar 2019 23:37:21 +0800</lastBuildDate><atom:link href="https://www.offf.xyz/categories/c++11/index.xml" rel="self" type="application/rss+xml"/><item><title>左值和右值</title><link>https://www.offf.xyz/cpp11-lval-rval/</link><pubDate>Mon, 11 Mar 2019 23:37:21 +0800</pubDate><guid>https://www.offf.xyz/cpp11-lval-rval/</guid><description>本文整理自网文，如有冒犯，请告知删除。 左值(lvalue)和右值(rvalue) 左值(lvalue)和右值(rvalue)是c/c++中的基础概念。 简单理解为：有名字的是左值，没有名字的是右值。
+C C语言中，左、右值均可为变量或表达式 C语言中，左值可出现在=号左边，也可出现在=号右边 C语言中，右值只能出现在=号右边 int x, y;
+x = 1;
+y = 2;
+x = y;
+y = x;
+2 = x; //err
+x,y为左值，2为右值
+CPP CPP语言中，一个表达式会产生一个左值，或者一个右值，前者称为左值表达式，后者称为右值表达式。 CPP语言中，对于基本类型，左值和右值概念与C语言相同。 CPP语言中，对于自定义类型，右值允许通过它的成员函数进行修改。 class A {
+public:
+A(int i) : _i(i) {}
+A&amp;amp; operator=(const A&amp;amp; other) {
+_i = other._i;
+return *this;
+}
+void set(int i) {
+_i = i;
+}
+int get() {
+return _i;
+}
+private:
+int _i;
+};
+int main() {
+A a(5);
+auto f = [&amp;amp;] () -&amp;gt;A {
+return a;
+}
+f().</description></item><item><title>lambda函数</title><link>https://www.offf.xyz/cpp11-lambda/</link><pubDate>Sun, 10 Mar 2019 23:37:21 +0800</pubDate><guid>https://www.offf.xyz/cpp11-lambda/</guid><description>格式 [捕捉列表] (参数) mutable -&amp;gt; 返回值类型 {函数体}
+lambda 表达式是一种匿名函数，即没有函数名的函数；该匿名函数是由数学中的λ演算而来的。
+种类 []{} 最简单的lambda函数 [var] 表示以值传递方式捕捉变量var int main() {
+int x = 5;
+auto f = [x]{
+//x is read-only
+int y;
+y = x + 1;
+std::cout &amp;lt;&amp;lt; y &amp;lt;&amp;lt; std::endl;
+};
+f();
+return 0;
+}
+$&amp;gt;&amp;gt; 6
+[=] 表示值传递捕捉所有父作用域变量 int main() {
+int x = 5;
+int y = 6;
+auto f = [=]{
+//x,y is read-only
+int z;
+z = x + y;
+std::cout &amp;lt;&amp;lt; z &amp;lt;&amp;lt; std::endl;
+};
+f();
+return 0;
+}
+$&amp;gt;&amp;gt; 11
+[&amp;amp;var] 表示以引用传递方式捕捉变量var int main() {
+int x = 5;
+auto f = [&amp;amp;x]{
+x++;
+};
+f();
+std::cout &amp;lt;&amp;lt; x &amp;lt;&amp;lt; std::endl;
+return 0;
+}
+$&amp;gt;&amp;gt; 6
+[&amp;amp;] 表示引用传递捕捉所有父作用域变量 int main() {
+int x = 5;
+int y = 0;
+auto f = [&amp;amp;]{
+x++;
+y++;
+};
+f();
+std::cout &amp;lt;&amp;lt; x &amp;lt;&amp;lt; std::endl;
+std::cout &amp;lt;&amp;lt; y &amp;lt;&amp;lt; std::endl;
+return 0;
+}
+$&amp;gt;&amp;gt; 6
+$&amp;gt;&amp;gt; 1
+[this] 表示值传递方式捕捉当前的this指针 class A {
+public:
+void foo() {
+auto f = [this] {
+bar();
+};
+f();
+}
+void bar() {
+std::cout &amp;lt;&amp;lt; &amp;#34;bar&amp;#34; &amp;lt;&amp;lt; std::endl;
+}
+};
+int main() {
+A a;
+a.</description></item><item><title>c++11的weak_ptr</title><link>https://www.offf.xyz/cpp11-weak_ptr/</link><pubDate>Sat, 09 Mar 2019 23:37:21 +0800</pubDate><guid>https://www.offf.xyz/cpp11-weak_ptr/</guid><description>why? class A {
+public:
+A() { std::cout &amp;lt;&amp;lt; &amp;#34;A ctor&amp;#34; &amp;lt;&amp;lt; std::endl;}
+~A() { std::cout &amp;lt;&amp;lt; &amp;#34;A dtor&amp;#34; &amp;lt;&amp;lt; std::endl; }
+std::shared_ptr&amp;lt;B&amp;gt; spB;
+};
+class B {
+public:
+B() { std::cout &amp;lt;&amp;lt; &amp;#34;B ctor&amp;#34; &amp;lt;&amp;lt; std::endl;}
+~B() { std::cout &amp;lt;&amp;lt; &amp;#34;B dtor&amp;#34; &amp;lt;&amp;lt; std::endl; }
+std::shared_ptr&amp;lt;A&amp;gt; spA;
+};
+int main() {
+std::shared_ptr&amp;lt;A&amp;gt; spA = std::make_shared&amp;lt;A&amp;gt;();
+std::shared_ptr&amp;lt;B&amp;gt; spB = std::make_shared&amp;lt;B&amp;gt;();
+spA-&amp;gt;spB_ = spB;
+spB-&amp;gt;spA_ = spA;
+return 0;
+}
+output:
+A ctor
+B ctor
+从以上结果可以看出，A、B均未释放，造成内存泄漏。 根本原因在于，A、B之间的循环引用。
+how? weak_ptr用来与shared_ptr共同使用，避免内存泄漏。
+class A {
+public:
+A() { std::cout &amp;lt;&amp;lt; &amp;#34;A ctor&amp;#34; &amp;lt;&amp;lt; std::endl;}
+~A() { std::cout &amp;lt;&amp;lt; &amp;#34;A dtor&amp;#34; &amp;lt;&amp;lt; std::endl; }
+void foo() {
+std::cout &amp;lt;&amp;lt; &amp;#34;I am foo&amp;#34; &amp;lt;&amp;lt; std::endl;
+}
+std::weak_ptr&amp;lt;B&amp;gt; wpB_;
+};
+class B {
+public:
+B() { std::cout &amp;lt;&amp;lt; &amp;#34;B ctor&amp;#34; &amp;lt;&amp;lt; std::endl;}
+~B() { std::cout &amp;lt;&amp;lt; &amp;#34;B dtor&amp;#34; &amp;lt;&amp;lt; std::endl; }
+std::weak_ptr&amp;lt;A&amp;gt; wpA_;
+};
+int main() {
+std::shared_ptr&amp;lt;A&amp;gt; spA = std::make_shared&amp;lt;A&amp;gt;();
+std::shared_ptr&amp;lt;B&amp;gt; spB = std::make_shared&amp;lt;B&amp;gt;();
+spA-&amp;gt;wpB_ = spB;
+spB-&amp;gt;wpA_ = spA;
+spB-&amp;gt;wpA_.</description></item><item><title>c++11的auto关键字</title><link>https://www.offf.xyz/cpp11-auto/</link><pubDate>Fri, 08 Mar 2019 13:37:21 +0800</pubDate><guid>https://www.offf.xyz/cpp11-auto/</guid><description>c++11之前 c++11之前，auto关键字用来表示变量的存储期
+类型推断 变量声明时可以用auto,编译器会自动推断数据类型
+auto i = 10;
+std::vector&amp;lt;int&amp;gt; v;
+for (auto it = v.begin(); it != v.end(); it++) {
+std::cout &amp;lt;&amp;lt; *v &amp;lt;&amp;lt; std::endl;
+}
+可见，auto使代码更简洁，增强了可读性。</description></item><item><title>c++11的shared_ptr</title><link>https://www.offf.xyz/cpp11-shared-ptr/</link><pubDate>Fri, 08 Mar 2019 13:37:21 +0800</pubDate><guid>https://www.offf.xyz/cpp11-shared-ptr/</guid><description>what? 智能指针是基于RAII思想的c++类（类模板）
+why? 智能指针帮助c++使用者更好的管理内存
+how? 使用方法
+eg:
+std::shared_ptr&amp;lt;int&amp;gt; foo = std::make_shared&amp;lt;int&amp;gt; (10);
+// same as:
+//std::shared_ptr&amp;lt;int&amp;gt; foo (new int(10));
+std::cout &amp;lt;&amp;lt; &amp;#34;*foo: &amp;#34; &amp;lt;&amp;lt; *foo &amp;lt;&amp;lt; std::endl;
+eg:
+class A {
+public:
+A(int i) : m_i(i) { }
+void foo() {
+std::cout &amp;lt;&amp;lt; m_i &amp;lt;&amp;lt; std::endl;
+}
+private:
+int m_i;
+};
+typedef std::shared_ptr&amp;lt;A&amp;gt; A_PTR;
+A_PTR aPtr = std::make_shared&amp;lt;A&amp;gt;(10);
+std::cout &amp;lt;&amp;lt; aPtr-&amp;gt;foo() &amp;lt;&amp;lt; std::endl;</description></item></channel></rss>

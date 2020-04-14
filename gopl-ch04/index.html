@@ -1,0 +1,213 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=generator content="Hugo 0.69.0"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><title>Golang复合类型 | A Crazy Cat</title><meta property="og:title" content="Golang复合类型 - A Crazy Cat"><meta property="og:type" content="article"><meta property="article:published_time" content="2019-03-13T13:37:21+08:00"><meta property="article:modified_time" content="2019-03-13T13:37:21+08:00"><meta name=Keywords content><meta name=description content="Golang复合类型"><meta name=author content="Gray Lnil"><meta property="og:url" content="https://www.offf.xyz/gopl-ch04/"><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link rel=stylesheet href=/css/normalize.css><link rel=stylesheet href=/css/prism.css><link rel=stylesheet href=/css/style.css><script type=text/javascript src=//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js></script></head><body><header id=header class=clearfix><div class=container><div class=col-group><div class=site-name><a id=logo href=https://www.offf.xyz/>A Crazy Cat</a><p class=description>Maybe nothing was found here.</p></div><div><nav id=nav-menu class=clearfix><a href=https://www.offf.xyz/>首页</a>
+<a href=https://www.offf.xyz/archives/ title=归档>归档</a>
+<a href=https://www.offf.xyz/about/ title=关于>关于</a></nav></div></div></div></header><div id=body><div class=container><div class=col-group><div class=col-8 id=main><div class=res-cons><article class=post><header><h1 class=post-title>Golang复合类型</h1></header><date class="post-meta meta-date">2019年3月13日</date><div class=post-meta><span>|</span>
+<span class=meta-category><a href=https://www.offf.xyz/categories/golang>golang</a></span></div><div class=post-meta><span id=busuanzi_container_page_pv>|<span id=busuanzi_value_page_pv></span><span> 阅读</span></span></div><div class=post-content><h3 id=简述>简述</h3><p>基本类型是Go语言世界的原子，复合类型则是分子。</p><h3 id=数组>数组</h3><blockquote><p>数组是固定长度的序列。因此，其很少直接使用。
+与C语言数组特性类似。</p></blockquote><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    <span style=color:#000;font-weight:700>var</span> a [<span style=color:#099>3</span>]<span style=color:#458;font-weight:700>int</span>    <span style=color:#998;font-style:italic>//其中[3]int为数组类型
+</span><span style=color:#998;font-style:italic></span>    fmt.<span style=color:#900;font-weight:700>Println</span>(a[<span style=color:#099>0</span>])
+    fmt.<span style=color:#900;font-weight:700>Println</span>(a[<span style=color:#0086b3>len</span>(a) <span style=color:#000;font-weight:700>-</span> <span style=color:#099>1</span>])
+
+    <span style=color:#000;font-weight:700>var</span> b [<span style=color:#099>3</span>]<span style=color:#458;font-weight:700>int</span> = [<span style=color:#099>3</span>]<span style=color:#458;font-weight:700>int</span>{<span style=color:#099>1</span>, <span style=color:#099>2</span>, <span style=color:#099>3</span>}
+    <span style=color:#000;font-weight:700>var</span> c [<span style=color:#099>3</span>]<span style=color:#458;font-weight:700>int</span> = [<span style=color:#099>3</span>]<span style=color:#458;font-weight:700>int</span>{<span style=color:#099>1</span>, <span style=color:#099>2</span>}
+    <span style=color:#000;font-weight:700>var</span> d = [<span style=color:#000;font-weight:700>...</span>]<span style=color:#458;font-weight:700>int</span>{<span style=color:#099>1</span>, <span style=color:#099>2</span>, <span style=color:#099>3</span>, <span style=color:#099>4</span>}    <span style=color:#998;font-style:italic>// len = 4
+</span><span style=color:#998;font-style:italic></span>    q <span style=color:#000;font-weight:700>:=</span> [<span style=color:#000;font-weight:700>...</span>]<span style=color:#458;font-weight:700>int</span>{<span style=color:#099>1</span>, <span style=color:#099>2</span>}
+
+    <span style=color:#998;font-style:italic>//指定一个索引和对应值列表的方式初始化
+</span><span style=color:#998;font-style:italic></span>    <span style=color:#000;font-weight:700>type</span> Currency <span style=color:#458;font-weight:700>int</span>
+    <span style=color:#000;font-weight:700>const</span> (
+        USD Currency = <span style=color:#000;font-weight:700>iota</span> <span style=color:#998;font-style:italic>// 美元
+</span><span style=color:#998;font-style:italic></span>        EUR <span style=color:#998;font-style:italic>// 欧元
+</span><span style=color:#998;font-style:italic></span>        GBP <span style=color:#998;font-style:italic>// 英镑
+</span><span style=color:#998;font-style:italic></span>        RMB <span style=color:#998;font-style:italic>// 人民币
+</span><span style=color:#998;font-style:italic></span>    )
+    symbol <span style=color:#000;font-weight:700>:=</span> [<span style=color:#000;font-weight:700>...</span>]<span style=color:#458;font-weight:700>string</span>{USD: <span style=color:#d14>&#34;$&#34;</span>, EUR: <span style=color:#d14>&#34;€&#34;</span>, GBP: <span style=color:#d14>&#34;￡&#34;</span>, RMB: <span style=color:#d14>&#34;￥&#34;</span>}
+    fmt.<span style=color:#900;font-weight:700>Println</span>(RMB, symbol[RMB]) <span style=color:#998;font-style:italic>// &#34;3 ￥&#34;
+</span><span style=color:#998;font-style:italic></span>
+    r <span style=color:#000;font-weight:700>:=</span> [<span style=color:#000;font-weight:700>...</span>]{<span style=color:#099>99</span>: <span style=color:#000;font-weight:700>-</span><span style=color:#099>1</span>}  <span style=color:#998;font-style:italic>//第100个元素初始化为-1
+</span></code></pre></div><blockquote><p>如果两个数组类型可以比较，那么两个数组是可以用==或!=比较</p></blockquote><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    a <span style=color:#000;font-weight:700>:=</span> [<span style=color:#000;font-weight:700>...</span>]<span style=color:#458;font-weight:700>int</span>{<span style=color:#099>1</span>, <span style=color:#099>2</span>}
+    b <span style=color:#000;font-weight:700>:=</span> [<span style=color:#000;font-weight:700>...</span>]<span style=color:#458;font-weight:700>int</span>{<span style=color:#099>1</span>, <span style=color:#099>2</span>, <span style=color:#099>3</span>}
+    c <span style=color:#000;font-weight:700>:=</span> [<span style=color:#000;font-weight:700>...</span>]<span style=color:#458;font-weight:700>int</span>{<span style=color:#099>1</span>, <span style=color:#099>2</span>}
+    d <span style=color:#000;font-weight:700>:=</span> [<span style=color:#000;font-weight:700>...</span>]<span style=color:#458;font-weight:700>int</span>{<span style=color:#099>1</span>, <span style=color:#099>1</span>}
+
+    fmt.<span style=color:#900;font-weight:700>Println</span>(a <span style=color:#000;font-weight:700>==</span> b)     <span style=color:#998;font-style:italic>//err: [2]int与[3]int数组类型不同
+</span><span style=color:#998;font-style:italic></span>    fmt.<span style=color:#900;font-weight:700>Println</span>(a <span style=color:#000;font-weight:700>==</span> c)     <span style=color:#998;font-style:italic>//true
+</span><span style=color:#998;font-style:italic></span>    fmt.<span style=color:#900;font-weight:700>Println</span>(a <span style=color:#000;font-weight:700>==</span> d)     <span style=color:#998;font-style:italic>//false
+</span></code></pre></div><blockquote><p>数组用于函数参数，由于数组长度的固定性。一般不用于函数参数。</p></blockquote><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    <span style=color:#998;font-style:italic>//清零数组
+</span><span style=color:#998;font-style:italic></span>    <span style=color:#000;font-weight:700>func</span> <span style=color:#900;font-weight:700>zero</span>(ptr <span style=color:#000;font-weight:700>*</span>[<span style=color:#099>32</span>]<span style=color:#458;font-weight:700>byte</span>) {
+        <span style=color:#000;font-weight:700>*</span>ptr = [<span style=color:#099>32</span>]<span style=color:#458;font-weight:700>byte</span>{}
+    }
+    <span style=color:#998;font-style:italic>// zero函数不能接受[16]byte类型的指针
+</span></code></pre></div><h3 id=切片slice>切片(Slice)</h3><ol><li>基本概念</li></ol><blockquote><p>构成： 指针、长度和容量
+指针为Slice第一个元素地址，并不一定是数组第一个元素地址
+len和cap分别返回长度和容量，len(slice) &lt;= cap(slice)</p></blockquote><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    months <span style=color:#000;font-weight:700>:=</span> [<span style=color:#000;font-weight:700>...</span>]<span style=color:#458;font-weight:700>string</span>{<span style=color:#099>1</span>: <span style=color:#d14>&#34;January&#34;</span>, <span style=color:#998;font-style:italic>/* ... */</span>, <span style=color:#099>12</span>: <span style=color:#d14>&#34;December&#34;</span>}
+    months[<span style=color:#099>1</span>:<span style=color:#099>13</span>]    <span style=color:#998;font-style:italic>//引用12个月份
+</span><span style=color:#998;font-style:italic></span>    months[<span style=color:#099>1</span>:]      <span style=color:#998;font-style:italic>//引用12个月份
+</span><span style=color:#998;font-style:italic></span>    months[:]       <span style=color:#998;font-style:italic>//引用整个数组，0和12个月份
+</span></code></pre></div><ol start=2><li>Slice作为函数参数</li></ol><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    <span style=color:#000;font-weight:700>func</span> <span style=color:#900;font-weight:700>reverse</span>(s []<span style=color:#458;font-weight:700>int</span>) {
+        <span style=color:#000;font-weight:700>for</span> i, j <span style=color:#000;font-weight:700>:=</span> <span style=color:#099>0</span>, <span style=color:#0086b3>len</span>(s) <span style=color:#000;font-weight:700>-</span> <span style=color:#099>1</span>; i &lt; j; i<span style=color:#000;font-weight:700>++</span>, j<span style=color:#000;font-weight:700>--</span> {
+            s[i], s[j] = s[j], s[i]
+        }
+    }
+
+    a <span style=color:#000;font-weight:700>:=</span> [<span style=color:#000;font-weight:700>...</span>]<span style=color:#458;font-weight:700>int</span>{<span style=color:#099>1</span>, <span style=color:#099>2</span>, <span style=color:#099>3</span>, <span style=color:#099>4</span>, <span style=color:#099>5</span>}
+    <span style=color:#900;font-weight:700>reverse</span>(a)  <span style=color:#998;font-style:italic>//error, must be Slice.
+</span><span style=color:#998;font-style:italic></span>    <span style=color:#900;font-weight:700>reverse</span>(a[:])
+</code></pre></div><ol start=3><li>Slice不能进行==或!=比较</li><li>slice唯一合法的比较操作是和nil比较</li></ol><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    <span style=color:#000;font-weight:700>var</span> s []<span style=color:#458;font-weight:700>int</span> <span style=color:#998;font-style:italic>// len(s) == 0, s == nil
+</span><span style=color:#998;font-style:italic></span>    s = <span style=color:#000;font-weight:700>nil</span> <span style=color:#998;font-style:italic>// len(s) == 0, s == nil
+</span><span style=color:#998;font-style:italic></span>    s = []<span style=color:#0086b3>int</span>(<span style=color:#000;font-weight:700>nil</span>) <span style=color:#998;font-style:italic>// len(s) == 0, s == nil
+</span><span style=color:#998;font-style:italic></span>    s = []<span style=color:#458;font-weight:700>int</span>{} <span style=color:#998;font-style:italic>// len(s) == 0, s != nil
+</span></code></pre></div><ol start=5><li>判断Slice是否为空，需要用len(s) == 0判断</li><li>Slice创建和追加元素</li></ol><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    <span style=color:#0086b3>make</span>([]T, len)
+    <span style=color:#0086b3>make</span>([]T, len, cap) <span style=color:#998;font-style:italic>// same as make([]T, cap)[:len]
+</span><span style=color:#998;font-style:italic></span>
+    s <span style=color:#000;font-weight:700>:=</span> <span style=color:#0086b3>make</span>([]<span style=color:#458;font-weight:700>int</span>, <span style=color:#099>5</span>)
+    s = <span style=color:#0086b3>append</span>(s, <span style=color:#099>1</span>)
+    s = <span style=color:#0086b3>append</span>(s, <span style=color:#099>2</span>)
+    fmt.<span style=color:#900;font-weight:700>Println</span>(s)
+
+</code></pre></div><h3 id=map>Map</h3><blockquote><p>与cpp中的unordered_map类似，Go中的map底层也是哈希表
+map[K]V中的K必须是支持==运算符的数据类型
+符点数用作K是一个糟糕的用法，符点数具有精度问题。</p></blockquote><ol><li>map创建</li></ol><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    <span style=color:#998;font-style:italic>//使用make创建
+</span><span style=color:#998;font-style:italic></span>    ages <span style=color:#000;font-weight:700>:=</span> <span style=color:#0086b3>make</span>([<span style=color:#458;font-weight:700>string</span>]<span style=color:#458;font-weight:700>int</span>)
+    <span style=color:#998;font-style:italic>//字面值创建
+</span><span style=color:#998;font-style:italic></span>    ages <span style=color:#000;font-weight:700>:=</span> <span style=color:#000;font-weight:700>map</span>[<span style=color:#458;font-weight:700>string</span>]<span style=color:#458;font-weight:700>int</span>{
+        <span style=color:#d14>&#34;alice&#34;</span>: <span style=color:#099>31</span>,
+        <span style=color:#d14>&#34;charlie&#34;</span>: <span style=color:#099>34</span>,
+    }
+    <span style=color:#998;font-style:italic>//创建空map
+</span><span style=color:#998;font-style:italic></span>    ages <span style=color:#000;font-weight:700>:=</span> <span style=color:#000;font-weight:700>map</span>[<span style=color:#458;font-weight:700>string</span>]<span style=color:#458;font-weight:700>int</span> {}
+    <span style=color:#998;font-style:italic>//遍历
+</span><span style=color:#998;font-style:italic></span>    <span style=color:#000;font-weight:700>for</span> name, age <span style=color:#000;font-weight:700>:=</span> <span style=color:#000;font-weight:700>range</span> ages {
+        fmt.<span style=color:#900;font-weight:700>Printf</span>(<span style=color:#d14>&#34;%s\t%d\n&#34;</span>, name, age)
+    }
+    fmt.<span style=color:#900;font-weight:700>Println</span>(ages[<span style=color:#d14>&#34;alice&#34;</span>])
+    fmt.<span style=color:#900;font-weight:700>Println</span>(ages[<span style=color:#d14>&#34;Lily&#34;</span>]) <span style=color:#998;font-style:italic>//不存在的key，返回对应类型的0值
+</span><span style=color:#998;font-style:italic></span>
+    <span style=color:#998;font-style:italic>/////nil
+</span><span style=color:#998;font-style:italic></span>    <span style=color:#000;font-weight:700>var</span> ages <span style=color:#000;font-weight:700>map</span>[<span style=color:#458;font-weight:700>string</span>]<span style=color:#458;font-weight:700>int</span>
+    fmt.<span style=color:#900;font-weight:700>Println</span>(ages <span style=color:#000;font-weight:700>==</span> <span style=color:#000;font-weight:700>nil</span>) <span style=color:#998;font-style:italic>// &#34;true&#34;
+</span><span style=color:#998;font-style:italic></span>    fmt.<span style=color:#900;font-weight:700>Println</span>(<span style=color:#0086b3>len</span>(ages) <span style=color:#000;font-weight:700>==</span> <span style=color:#099>0</span>) <span style=color:#998;font-style:italic>// &#34;true&#34;
+</span><span style=color:#998;font-style:italic></span>
+    <span style=color:#998;font-style:italic>//判断key是否存在
+</span><span style=color:#998;font-style:italic></span>    age, ok <span style=color:#000;font-weight:700>:=</span> ages[<span style=color:#d14>&#34;Lucy&#34;</span>]
+    <span style=color:#000;font-weight:700>if</span> !ok {
+        <span style=color:#998;font-style:italic>//not exists
+</span><span style=color:#998;font-style:italic></span>    }
+    <span style=color:#998;font-style:italic>//简写
+</span><span style=color:#998;font-style:italic></span>    <span style=color:#000;font-weight:700>if</span> age, ok <span style=color:#000;font-weight:700>:=</span> ages[<span style=color:#d14>&#34;Lucy&#34;</span>]; !ok {
+        <span style=color:#998;font-style:italic>/////////
+</span><span style=color:#998;font-style:italic></span>    }
+</code></pre></div><ol start=2><li>map的零值为nil</li><li>map之间不能进行==或!=比较，只能和nil比较</li><li>Map的value类型也可以是一个聚合类型</li></ol><h3 id=结构体>结构体</h3><ol><li>相邻成员如果类型相同，可以合并到同一行</li></ol><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    <span style=color:#000;font-weight:700>type</span> Employee <span style=color:#000;font-weight:700>struct</span> {
+        ID <span style=color:#458;font-weight:700>int</span>
+        Name, Address <span style=color:#458;font-weight:700>string</span>
+        DoB time.Time
+        Position <span style=color:#458;font-weight:700>string</span>
+        Salary <span style=color:#458;font-weight:700>int</span>
+        ManagerID <span style=color:#458;font-weight:700>int</span>
+    }
+</code></pre></div><ol start=2><li>没有任何成员的结构体是空结构体，表示为struct{}, 其默认零值为struct{}{}</li><li>结构体字面值</li></ol><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    <span style=color:#998;font-style:italic>//方法一，较小的结构体中使用
+</span><span style=color:#998;font-style:italic></span>    <span style=color:#000;font-weight:700>type</span> Point <span style=color:#000;font-weight:700>struct</span> {
+        x, y <span style=color:#458;font-weight:700>int</span>
+    }
+
+    p <span style=color:#000;font-weight:700>:=</span> Point{<span style=color:#099>1</span>, <span style=color:#099>2</span>}
+
+    <span style=color:#998;font-style:italic>//方法二，通用型
+</span><span style=color:#998;font-style:italic></span>    <span style=color:#000;font-weight:700>type</span> T <span style=color:#000;font-weight:700>struct</span> {
+        a, b <span style=color:#458;font-weight:700>int</span>
+    }
+
+    t <span style=color:#000;font-weight:700>:=</span> T{a: <span style=color:#099>2</span>, b: <span style=color:#099>3</span>}
+</code></pre></div><ol start=4><li>作为函数参数和返回值</li></ol><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    <span style=color:#000;font-weight:700>type</span> Point <span style=color:#000;font-weight:700>struct</span> {
+        x, y <span style=color:#458;font-weight:700>int</span>
+    }
+
+    <span style=color:#000;font-weight:700>func</span> <span style=color:#900;font-weight:700>Scale</span>(p Point, factor <span style=color:#458;font-weight:700>int</span>) Point {
+        <span style=color:#000;font-weight:700>return</span> Point{p.x <span style=color:#000;font-weight:700>*</span> factor, p.y <span style=color:#000;font-weight:700>*</span> factor}
+    }
+
+    <span style=color:#998;font-style:italic>//对于较大结构体或为了改变成员的值，需要用结构体指针作参数
+</span><span style=color:#998;font-style:italic></span>    <span style=color:#000;font-weight:700>func</span> <span style=color:#900;font-weight:700>Scale</span>(p <span style=color:#000;font-weight:700>*</span>Point, factor <span style=color:#458;font-weight:700>int</span>) {
+        p.x <span style=color:#000;font-weight:700>*=</span> factor
+        p.y <span style=color:#000;font-weight:700>*=</span> factor
+    }
+</code></pre></div><ol start=5><li>两个结构体可以用==或!=进行比较</li></ol><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    <span style=color:#000;font-weight:700>type</span> Point <span style=color:#000;font-weight:700>struct</span> {
+        x, y <span style=color:#458;font-weight:700>int</span>
+    }
+
+    p <span style=color:#000;font-weight:700>:=</span> Point{x: <span style=color:#099>1</span>, y: <span style=color:#099>2</span>}
+    q <span style=color:#000;font-weight:700>:=</span> Point{x: <span style=color:#099>2</span>, y: <span style=color:#099>1</span>}
+    fmt.<span style=color:#900;font-weight:700>Println</span>(p <span style=color:#000;font-weight:700>==</span> q) <span style=color:#998;font-style:italic>//false
+</span></code></pre></div><ol start=6><li>匿名成员</li></ol><blockquote><p>匿名成员必须是命名类型或命名类型指针
+外层结构体获得匿名成员的所有成员和可导出方法</p></blockquote><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    <span style=color:#000;font-weight:700>type</span> Point <span style=color:#000;font-weight:700>struct</span> {
+        x, y <span style=color:#458;font-weight:700>int</span>
+    }
+
+    <span style=color:#000;font-weight:700>type</span> Circle <span style=color:#000;font-weight:700>struct</span> {
+        Point
+        Radius <span style=color:#458;font-weight:700>int</span>
+    }
+
+    <span style=color:#000;font-weight:700>type</span> Wheel <span style=color:#000;font-weight:700>struct</span> {
+        Circle
+        Spokes <span style=color:#458;font-weight:700>int</span>
+    }
+
+    <span style=color:#000;font-weight:700>var</span> w Wheel
+    w.x = <span style=color:#099>1</span>
+    w.y = <span style=color:#099>2</span>
+    w.Radius = <span style=color:#099>3</span>
+    w.Spokes = <span style=color:#099>5</span>
+
+    <span style=color:#998;font-style:italic>//字面值表示
+</span><span style=color:#998;font-style:italic></span>    w = Wheel{Circle{Point{<span style=color:#099>8</span>, <span style=color:#099>8</span>}, <span style=color:#099>5</span>}, <span style=color:#099>20</span>}
+    w = Wheel{
+        Circle: Circle{
+            Point: Point{X: <span style=color:#099>8</span>, Y: <span style=color:#099>8</span>},
+            Radius: <span style=color:#099>5</span>,
+        },
+        Spokes: <span style=color:#099>20</span>, <span style=color:#998;font-style:italic>// NOTE: trailing comma necessary here (and at Radius)
+</span><span style=color:#998;font-style:italic></span>    }
+
+    w = Wheel{<span style=color:#099>1</span>, <span style=color:#099>2</span>, <span style=color:#099>3</span>, <span style=color:#099>5</span>} <span style=color:#998;font-style:italic>//compile error
+</span></code></pre></div><h3 id=json>JSON</h3><ol><li>marshaling(编码): 将结构体Slice转为json字符串的过程</li><li>unmarshaling(解码): 将json字符串转为结构体Slice的过程</li></ol><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    <span style=color:#000;font-weight:700>type</span> Movie <span style=color:#000;font-weight:700>struct</span> {
+        Title <span style=color:#458;font-weight:700>string</span>
+        Year <span style=color:#458;font-weight:700>int</span> <span style=color:#d14>`json:&#34;released&#34;`</span>
+        Color <span style=color:#458;font-weight:700>bool</span> <span style=color:#d14>`json:&#34;color,omitempty&#34;`</span>
+        Actors []<span style=color:#458;font-weight:700>string</span>
+    }
+    <span style=color:#000;font-weight:700>var</span> movies = []Movie{
+        {Title: <span style=color:#d14>&#34;Casablanca&#34;</span>, Year: <span style=color:#099>1942</span>, Color: <span style=color:#000;font-weight:700>false</span>,
+        Actors: []<span style=color:#458;font-weight:700>string</span>{<span style=color:#d14>&#34;Humphrey Bogart&#34;</span>, <span style=color:#d14>&#34;Ingrid Bergman&#34;</span>}},
+        {Title: <span style=color:#d14>&#34;Cool Hand Luke&#34;</span>, Year: <span style=color:#099>1967</span>, Color: <span style=color:#000;font-weight:700>true</span>,
+        Actors: []<span style=color:#458;font-weight:700>string</span>{<span style=color:#d14>&#34;Paul Newman&#34;</span>}},
+        {Title: <span style=color:#d14>&#34;Bullitt&#34;</span>, Year: <span style=color:#099>1968</span>, Color: <span style=color:#000;font-weight:700>true</span>,
+        Actors: []<span style=color:#458;font-weight:700>string</span>{<span style=color:#d14>&#34;Steve McQueen&#34;</span>, <span style=color:#d14>&#34;Jacqueline Bisset&#34;</span>}},
+        <span style=color:#998;font-style:italic>// ...
+</span><span style=color:#998;font-style:italic></span>    }
+
+    <span style=color:#998;font-style:italic>//编码
+</span><span style=color:#998;font-style:italic></span>    data, err <span style=color:#000;font-weight:700>:=</span> json.<span style=color:#900;font-weight:700>Marshal</span>(movies)   <span style=color:#998;font-style:italic>//或MarshalIndent产生缩进json字符串
+</span><span style=color:#998;font-style:italic></span>    <span style=color:#000;font-weight:700>if</span> err <span style=color:#000;font-weight:700>!=</span> <span style=color:#000;font-weight:700>nil</span> {
+    log.<span style=color:#900;font-weight:700>Fatalf</span>(<span style=color:#d14>&#34;JSON marshaling failed: %s&#34;</span>, err)
+    }
+    fmt.<span style=color:#900;font-weight:700>Printf</span>(<span style=color:#d14>&#34;%s\n&#34;</span>, data)
+
+    <span style=color:#998;font-style:italic>//解码
+</span><span style=color:#998;font-style:italic></span>    <span style=color:#000;font-weight:700>var</span> titles []<span style=color:#000;font-weight:700>struct</span>{ Title <span style=color:#458;font-weight:700>string</span> }     <span style=color:#998;font-style:italic>//获取部分json内容
+</span><span style=color:#998;font-style:italic></span>    <span style=color:#000;font-weight:700>if</span> err <span style=color:#000;font-weight:700>:=</span> json.<span style=color:#900;font-weight:700>Unmarshal</span>(data, <span style=color:#000;font-weight:700>&amp;</span>titles); err <span style=color:#000;font-weight:700>!=</span> <span style=color:#000;font-weight:700>nil</span> {
+        log.<span style=color:#900;font-weight:700>Fatalf</span>(<span style=color:#d14>&#34;JSON unmarshaling failed: %s&#34;</span>, err)
+    }
+    fmt.<span style=color:#900;font-weight:700>Println</span>(titles) <span style=color:#998;font-style:italic>// &#34;[{Casablanca} {Cool Hand Luke} {Bullitt}]&#34;
+</span></code></pre></div><h3 id=文本和html模板>文本和HTML模板</h3><p>//&mldr;</p></div><div class=post-archive><h2>See Also</h2><ul class=listing><li><a href=/gopl-ch03/>Golang基础数据类型</a></li><li><a href=/gopl-ch02/>Golang 程序结构</a></li><li><a href=/gopl-ch08/>Goroutines和Channels</a></li><li><a href=/gopl-ch01/>Golang 入门</a></li><li><a href=/gopl-ch07/>Golang接口</a></li></ul></div><div class="post-meta meta-tags"><ul class=clearfix><li><a href=https://www.offf.xyz/tags/golang>golang</a></li></ul></div></article></div></div><div id=secondary><section class=widget><form id=search action=https://www.offf.xyz/search method=get accept-charset=utf-8 target=_blank _lpchecked=1><input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch value=https://www.offf.xyz/>
+<button type=submit class="submit icon-search"></button></form></section><section class=widget><h3 class=widget-title>最近文章</h3><ul class=widget-list></ul></section><section class=widget><h3 class=widget-title>分类</h3><ul class=widget-list><li><a href=https://www.offf.xyz/categories/c++/>c++ (1)</a></li><li><a href=https://www.offf.xyz/categories/c++11/>c++11 (5)</a></li><li><a href=https://www.offf.xyz/categories/curl/>curl (1)</a></li><li><a href=https://www.offf.xyz/categories/editor/>editor (1)</a></li><li><a href=https://www.offf.xyz/categories/golang/>golang (10)</a></li><li><a href=https://www.offf.xyz/categories/shell/>shell (2)</a></li></ul></section><section class=widget><h3 class=widget-title>标签</h3><div class=tagcloud><a href=https://www.offf.xyz/tags/c++/>c++</a>
+<a href=https://www.offf.xyz/tags/c++11/>c++11</a>
+<a href=https://www.offf.xyz/tags/curl/>curl</a>
+<a href=https://www.offf.xyz/tags/editor/>editor</a>
+<a href=https://www.offf.xyz/tags/golang/>golang</a>
+<a href=https://www.offf.xyz/tags/shell/>shell</a></div></section><section class=widget><h3 class=widget-title>其它</h3><ul class=widget-list><li><a href=https://www.offf.xyz/index.xml>文章 RSS</a></li></ul></section></div></div></div></div><footer id=footer><div class=container>&copy; 2020 <a href=https://www.offf.xyz/>A Crazy Cat By Gray Lnil</a>.</div></footer><script type=text/javascript>(function(){$("pre code").parent().addClass("line-numbers")}());window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:true}};</script><script type=text/javascript src=/js/prism.js async></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script><a id=rocket href=#top></a><script type=text/javascript src="/js/totop.js?v=0.0.0" async></script><script type=text/javascript src=//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js async></script><script type=text/javascript>(function(){if(typeof self==='undefined'||!self.Prism||!self.document){return;}
+if(!Prism.plugins.toolbar){console.warn('Copy to Clipboard plugin loaded before Toolbar plugin.');return;}
+var ClipboardJS=window.ClipboardJS||undefined;if(!ClipboardJS&&typeof require==='function'){ClipboardJS=require('clipboard');}
+var callbacks=[];if(!ClipboardJS){var script=document.createElement('script');var head=document.querySelector('head');script.onload=function(){ClipboardJS=window.ClipboardJS;if(ClipboardJS){while(callbacks.length){callbacks.pop()();}}};script.src='https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js';head.appendChild(script);}
+Prism.plugins.toolbar.registerButton('copy-to-clipboard',function(env){var linkCopy=document.createElement('button');linkCopy.textContent='复制代码';if(!ClipboardJS){callbacks.push(registerClipboard);}else{registerClipboard();}
+return linkCopy;function registerClipboard(){var clip=new ClipboardJS(linkCopy,{'text':function(){return env.code;}});clip.on('success',function(){linkCopy.textContent='复制成功!';resetText();});clip.on('error',function(){linkCopy.textContent='按 Ctrl+C 复制';resetText();});}
+function resetText(){setTimeout(function(){linkCopy.textContent='复制代码';},5000);}});})();</script></body></html>

@@ -122,7 +122,100 @@ CSP是一种现代的并发编程模型，在这种编程模型中值会在不�
             fmt.<span style=color:#900;font-weight:700>Println</span>(x)
         }
     }
-</code></pre></div><h3 id=六带缓存的-channels>六、带缓存的 Channels</h3></div><div class=post-archive><h2>See Also</h2><ul class=listing><li><a href=/gopl-ch01/>Golang 入门</a></li><li><a href=/gopl-ch00/>Golang简介整理</a></li><li><a href=/gopl-ch07/>Golang接口</a></li><li><a href=/the-go-programming-language/>The Go Programming Language</a></li></ul></div><div class="post-meta meta-tags"><ul class=clearfix><li><a href=https://www.offf.xyz/tags/golang>golang</a></li></ul></div></article></div></div><div id=secondary><section class=widget><form id=search action=https://www.offf.xyz/search method=get accept-charset=utf-8 target=_blank _lpchecked=1><input type=text name=q maxlength=20 placeholder=Search>
+</code></pre></div><h3 id=六带缓存的-channels>六、带缓存的 Channels</h3><ol><li>带缓存的 channel 内部持有一个元素队列。</li><li>当队列为空时，接收方阻塞。当队列满时，发送方阻塞。</li><li>禁止在一个 goroutine 中把带缓存的 channel 当简单队列使用。这时，要用 slice 。</li></ol><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    ch <span style=color:#000;font-weight:700>:=</span> <span style=color:#0086b3>make</span>(<span style=color:#000;font-weight:700>chan</span> <span style=color:#458;font-weight:700>string</span>, <span style=color:#099>3</span>)
+    ch <span style=color:#000;font-weight:700>&lt;-</span> <span style=color:#d14>&#34;A&#34;</span>
+    ch <span style=color:#000;font-weight:700>&lt;-</span> <span style=color:#d14>&#34;B&#34;</span>
+    ch <span style=color:#000;font-weight:700>&lt;-</span> <span style=color:#d14>&#34;C&#34;</span>
+
+    <span style=color:#998;font-style:italic>//block
+</span><span style=color:#998;font-style:italic></span>    ch <span style=color:#000;font-weight:700>&lt;-</span> <span style=color:#d14>&#34;D&#34;</span>
+
+    fmt.<span style=color:#900;font-weight:700>Println</span>(<span style=color:#000;font-weight:700>&lt;-</span>ch)
+    <span style=color:#998;font-style:italic>// capacity
+</span><span style=color:#998;font-style:italic></span>    fmt.<span style=color:#900;font-weight:700>Println</span>(<span style=color:#0086b3>cap</span>(ch))    <span style=color:#998;font-style:italic>// 3
+</span><span style=color:#998;font-style:italic></span>    <span style=color:#998;font-style:italic>// size
+</span><span style=color:#998;font-style:italic></span>    fmt.<span style=color:#900;font-weight:700>Println</span>(<span style=color:#0086b3>len</span>(ch))    <span style=color:#998;font-style:italic>// 3
+</span><span style=color:#998;font-style:italic></span>
+</code></pre></div><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO>    <span style=color:#000;font-weight:700>package</span> cake
+
+    <span style=color:#000;font-weight:700>import</span> (
+        <span style=color:#d14>&#34;fmt&#34;</span>
+        <span style=color:#d14>&#34;math/rand&#34;</span>
+        <span style=color:#d14>&#34;time&#34;</span>
+    )
+
+    <span style=color:#000;font-weight:700>type</span> Shop <span style=color:#000;font-weight:700>struct</span> {
+        Verbose        <span style=color:#458;font-weight:700>bool</span>
+        Cakes          <span style=color:#458;font-weight:700>int</span>           <span style=color:#998;font-style:italic>// number of cakes to bake
+</span><span style=color:#998;font-style:italic></span>        BakeTime       time.Duration <span style=color:#998;font-style:italic>// time to bake one cake
+</span><span style=color:#998;font-style:italic></span>        BakeStdDev     time.Duration <span style=color:#998;font-style:italic>// standard deviation of baking time
+</span><span style=color:#998;font-style:italic></span>        BakeBuf        <span style=color:#458;font-weight:700>int</span>           <span style=color:#998;font-style:italic>// buffer slots between baking and icing
+</span><span style=color:#998;font-style:italic></span>        NumIcers       <span style=color:#458;font-weight:700>int</span>           <span style=color:#998;font-style:italic>// number of cooks doing icing
+</span><span style=color:#998;font-style:italic></span>        IceTime        time.Duration <span style=color:#998;font-style:italic>// time to ice one cake
+</span><span style=color:#998;font-style:italic></span>        IceStdDev      time.Duration <span style=color:#998;font-style:italic>// standard deviation of icing time
+</span><span style=color:#998;font-style:italic></span>        IceBuf         <span style=color:#458;font-weight:700>int</span>           <span style=color:#998;font-style:italic>// buffer slots between icing and inscribing
+</span><span style=color:#998;font-style:italic></span>        InscribeTime   time.Duration <span style=color:#998;font-style:italic>// time to inscribe one cake
+</span><span style=color:#998;font-style:italic></span>        InscribeStdDev time.Duration <span style=color:#998;font-style:italic>// standard deviation of inscribing time
+</span><span style=color:#998;font-style:italic></span>    }
+
+    <span style=color:#000;font-weight:700>type</span> cake <span style=color:#458;font-weight:700>int</span>
+
+    <span style=color:#000;font-weight:700>func</span> (s <span style=color:#000;font-weight:700>*</span>Shop) <span style=color:#900;font-weight:700>baker</span>(baked <span style=color:#000;font-weight:700>chan</span><span style=color:#000;font-weight:700>&lt;-</span> cake) {
+        <span style=color:#000;font-weight:700>for</span> i <span style=color:#000;font-weight:700>:=</span> <span style=color:#099>0</span>; i &lt; s.Cakes; i<span style=color:#000;font-weight:700>++</span> {
+            c <span style=color:#000;font-weight:700>:=</span> <span style=color:#900;font-weight:700>cake</span>(i)
+            <span style=color:#000;font-weight:700>if</span> s.Verbose {
+                fmt.<span style=color:#900;font-weight:700>Println</span>(<span style=color:#d14>&#34;baking&#34;</span>, c)
+            }
+            <span style=color:#900;font-weight:700>work</span>(s.BakeTime, s.BakeStdDev)
+            baked <span style=color:#000;font-weight:700>&lt;-</span> c
+        }
+        <span style=color:#0086b3>close</span>(baked)
+    }
+
+    <span style=color:#000;font-weight:700>func</span> (s <span style=color:#000;font-weight:700>*</span>Shop) <span style=color:#900;font-weight:700>icer</span>(iced <span style=color:#000;font-weight:700>chan</span><span style=color:#000;font-weight:700>&lt;-</span> cake, baked <span style=color:#000;font-weight:700>&lt;-</span><span style=color:#000;font-weight:700>chan</span> cake) {
+        <span style=color:#000;font-weight:700>for</span> c <span style=color:#000;font-weight:700>:=</span> <span style=color:#000;font-weight:700>range</span> baked {
+            <span style=color:#000;font-weight:700>if</span> s.Verbose {
+                fmt.<span style=color:#900;font-weight:700>Println</span>(<span style=color:#d14>&#34;icing&#34;</span>, c)
+            }
+            <span style=color:#900;font-weight:700>work</span>(s.IceTime, s.IceStdDev)
+            iced <span style=color:#000;font-weight:700>&lt;-</span> c
+        }
+    }
+
+    <span style=color:#000;font-weight:700>func</span> (s <span style=color:#000;font-weight:700>*</span>Shop) <span style=color:#900;font-weight:700>inscriber</span>(iced <span style=color:#000;font-weight:700>&lt;-</span><span style=color:#000;font-weight:700>chan</span> cake) {
+        <span style=color:#000;font-weight:700>for</span> i <span style=color:#000;font-weight:700>:=</span> <span style=color:#099>0</span>; i &lt; s.Cakes; i<span style=color:#000;font-weight:700>++</span> {
+            c <span style=color:#000;font-weight:700>:=</span> <span style=color:#000;font-weight:700>&lt;-</span>iced
+            <span style=color:#000;font-weight:700>if</span> s.Verbose {
+                fmt.<span style=color:#900;font-weight:700>Println</span>(<span style=color:#d14>&#34;inscribing&#34;</span>, c)
+            }
+            <span style=color:#900;font-weight:700>work</span>(s.InscribeTime, s.InscribeStdDev)
+            <span style=color:#000;font-weight:700>if</span> s.Verbose {
+                fmt.<span style=color:#900;font-weight:700>Println</span>(<span style=color:#d14>&#34;finished&#34;</span>, c)
+            }
+        }
+    }
+
+    <span style=color:#998;font-style:italic>// Work runs the simulation &#39;runs&#39; times.
+</span><span style=color:#998;font-style:italic></span>    <span style=color:#000;font-weight:700>func</span> (s <span style=color:#000;font-weight:700>*</span>Shop) <span style=color:#900;font-weight:700>Work</span>(runs <span style=color:#458;font-weight:700>int</span>) {
+        <span style=color:#000;font-weight:700>for</span> run <span style=color:#000;font-weight:700>:=</span> <span style=color:#099>0</span>; run &lt; runs; run<span style=color:#000;font-weight:700>++</span> {
+            baked <span style=color:#000;font-weight:700>:=</span> <span style=color:#0086b3>make</span>(<span style=color:#000;font-weight:700>chan</span> cake, s.BakeBuf)
+            iced <span style=color:#000;font-weight:700>:=</span> <span style=color:#0086b3>make</span>(<span style=color:#000;font-weight:700>chan</span> cake, s.IceBuf)
+            <span style=color:#000;font-weight:700>go</span> s.<span style=color:#900;font-weight:700>baker</span>(baked)
+            <span style=color:#000;font-weight:700>for</span> i <span style=color:#000;font-weight:700>:=</span> <span style=color:#099>0</span>; i &lt; s.NumIcers; i<span style=color:#000;font-weight:700>++</span> {
+                <span style=color:#000;font-weight:700>go</span> s.<span style=color:#900;font-weight:700>icer</span>(iced, baked)
+            }
+            s.<span style=color:#900;font-weight:700>inscriber</span>(iced)
+        }
+    }
+
+    <span style=color:#998;font-style:italic>// work blocks the calling goroutine for a period of time
+</span><span style=color:#998;font-style:italic></span>    <span style=color:#998;font-style:italic>// that is normally distributed around d
+</span><span style=color:#998;font-style:italic></span>    <span style=color:#998;font-style:italic>// with a standard deviation of stddev.
+</span><span style=color:#998;font-style:italic></span>    <span style=color:#000;font-weight:700>func</span> <span style=color:#900;font-weight:700>work</span>(d, stddev time.Duration) {
+        delay <span style=color:#000;font-weight:700>:=</span> d <span style=color:#000;font-weight:700>+</span> time.<span style=color:#900;font-weight:700>Duration</span>(rand.<span style=color:#900;font-weight:700>NormFloat64</span>()<span style=color:#000;font-weight:700>*</span><span style=color:#0086b3>float64</span>(stddev))
+        time.<span style=color:#900;font-weight:700>Sleep</span>(delay)
+    }
+</code></pre></div></div><div class=post-archive><h2>See Also</h2><ul class=listing><li><a href=/gopl-ch01/>Golang 入门</a></li><li><a href=/gopl-ch00/>Golang简介整理</a></li><li><a href=/gopl-ch07/>Golang接口</a></li><li><a href=/the-go-programming-language/>The Go Programming Language</a></li></ul></div><div class="post-meta meta-tags"><ul class=clearfix><li><a href=https://www.offf.xyz/tags/golang>golang</a></li></ul></div></article></div></div><div id=secondary><section class=widget><form id=search action=https://www.offf.xyz/search method=get accept-charset=utf-8 target=_blank _lpchecked=1><input type=text name=q maxlength=20 placeholder=Search>
 <input type=hidden name=sitesearch value=https://www.offf.xyz/>
 <button type=submit class="submit icon-search"></button></form></section><section class=widget><h3 class=widget-title>最近文章</h3><ul class=widget-list></ul></section><section class=widget><h3 class=widget-title>分类</h3><ul class=widget-list><li><a href=https://www.offf.xyz/categories/c++/>c++ (1)</a></li><li><a href=https://www.offf.xyz/categories/c++11/>c++11 (5)</a></li><li><a href=https://www.offf.xyz/categories/curl/>curl (1)</a></li><li><a href=https://www.offf.xyz/categories/editor/>editor (1)</a></li><li><a href=https://www.offf.xyz/categories/golang/>golang (10)</a></li><li><a href=https://www.offf.xyz/categories/shell/>shell (2)</a></li></ul></section><section class=widget><h3 class=widget-title>标签</h3><div class=tagcloud><a href=https://www.offf.xyz/tags/c++/>c++</a>
 <a href=https://www.offf.xyz/tags/c++11/>c++11</a>

@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=generator content="Hugo 0.69.0"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><title>A Crazy Cat | Maybe nothing was found here.</title><meta property="og:title" content="A Crazy Cat | Maybe nothing was found here."><meta property="og:type" content="website"><meta name=Keywords content><meta name=description content="A site is just like a recorder."><meta property="og:url" content="https://www.offf.xyz/"><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link rel=stylesheet href=/css/normalize.css><link rel=stylesheet href=/css/style.css><link rel=alternate type=application/rss+xml+xml href=https://www.offf.xyz/index.xml title="A Crazy Cat"><script type=text/javascript src=//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js></script></head><body><header id=header class=clearfix><div class=container><div class=col-group><div class=site-name><h1><a id=logo href=https://www.offf.xyz/>A Crazy Cat</a></h1><p class=description>Maybe nothing was found here.</p></div><div><nav id=nav-menu class=clearfix><a class=current href=https://www.offf.xyz/>首页</a>
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=generator content="Hugo 0.69.2"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><title>A Crazy Cat | Maybe nothing was found here.</title><meta property="og:title" content="A Crazy Cat | Maybe nothing was found here."><meta property="og:type" content="website"><meta name=Keywords content><meta name=description content="A site is just like a recorder."><meta property="og:url" content="https://www.offf.xyz/"><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link rel=stylesheet href=/css/normalize.css><link rel=stylesheet href=/css/style.css><link rel=alternate type=application/rss+xml+xml href=https://www.offf.xyz/index.xml title="A Crazy Cat"><script type=text/javascript src=//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js></script></head><body><header id=header class=clearfix><div class=container><div class=col-group><div class=site-name><h1><a id=logo href=https://www.offf.xyz/>A Crazy Cat</a></h1><p class=description>Maybe nothing was found here.</p></div><div><nav id=nav-menu class=clearfix><a class=current href=https://www.offf.xyz/>首页</a>
 <a href=https://www.offf.xyz/archives/ title=归档>归档</a>
 <a href=https://www.offf.xyz/about/ title=关于>关于</a></nav></div></div></div></header><div id=body><div class=container><div class=col-group><div class=col-8 id=main><div class=res-cons><article class=post><header><h1 class=post-title><a href=https://www.offf.xyz/gopl-ch03/ title=Golang基础数据类型>Golang基础数据类型</a></h1></header><date class="post-meta meta-date">2019年3月12日</date><div class=post-meta><span>|</span>
 <span class=meta-category><a href=https://www.offf.xyz/categories/golang>golang</a></span></div><div class=post-content>整型 一般整型
@@ -9,167 +9,19 @@ byte类型等价于uint8类型，byte用于强调数据的原始性。
 uintptr用来存放指针，多用于底层编程。
 int和int32大小相同，但是，是两个不同的类型。
 取模的结果总是与被取模数的符号相同
-fmt.Println(5%3) //2
-fmt.Println(5%-3) //2
-fmt.Println(-5%3) //-2
-fmt.Println(-5%-3) //-2
-符点数 float32、float64
+fmt.Println(5%3) //2 fmt.Println(5%-3) //2 fmt.Println(-5%3) //-2 fmt.Println(-5%-3) //-2 符点数 float32、float64
 通常应该优先使用float64类型，因为float32类型的累计计算误差很容易扩散。
 复数 complex64、complex128
-var x complex128 = complex(1, 2) // 1+2i
-var y complex128 = complex(3, 4) // 3+4i
-fmt.Println(x*y) // "(-5+10i)"
-fmt.Println(real(x*y)) // "-5" //取实部
-fmt.Println(imag(x*y)) // "10" //取虚部
-布尔型 true/false
+var x complex128 = complex(1, 2) // 1+2i var y complex128 = complex(3, 4) // 3+4i fmt.Println(x*y) // "(-5+10i)" fmt.Println(real(x*y)) // "-5" //取实部 fmt.Println(imag(x*y)) // "10" //取虚部 布尔型 true/false
 // btoi returns 1 if b is true and 0 if false.……</div><p class=readmore><a href=https://www.offf.xyz/gopl-ch03/>阅读全文</a></p></article><article class=post><header><h1 class=post-title><a href=https://www.offf.xyz/sh-tmpfile/ title=linux生成临时文件方法>linux生成临时文件方法</a></h1></header><date class="post-meta meta-date">2019年3月12日</date><div class=post-meta><span>|</span>
-<span class=meta-category><a href=https://www.offf.xyz/categories/shell>shell</a></span></div><div class=post-content>工具命令 mktemp 命令 mktemp 默认在/tmp/目录下生成tmp.xxxxxxxxx文件 trap 命令 trap命令用于指定在接收到信号后将要采取的动作 trap command/function signal 示例 #!/bin/sh
-# clear while this script exits.
-trap 'rm -f "$TMPFILE"' EXIT
-TMPFILE=$(mktemp -p `pwd`) || exit 1
-echo "temp file is $TMPFILE"
-……</div><p class=readmore><a href=https://www.offf.xyz/sh-tmpfile/>阅读全文</a></p></article><article class=post><header><h1 class=post-title><a href=https://www.offf.xyz/cpp11-lval-rval/ title=左值和右值>左值和右值</a></h1></header><date class="post-meta meta-date">2019年3月11日</date><div class=post-meta><span>|</span>
+<span class=meta-category><a href=https://www.offf.xyz/categories/shell>shell</a></span></div><div class=post-content>工具命令 mktemp 命令 mktemp 默认在/tmp/目录下生成tmp.xxxxxxxxx文件 trap 命令 trap命令用于指定在接收到信号后将要采取的动作 trap command/function signal 示例 #!/bin/sh # clear while this script exits. trap 'rm -f "$TMPFILE"' EXIT TMPFILE=$(mktemp -p `pwd`) || exit 1 echo "temp file is $TMPFILE" ……</div><p class=readmore><a href=https://www.offf.xyz/sh-tmpfile/>阅读全文</a></p></article><article class=post><header><h1 class=post-title><a href=https://www.offf.xyz/cpp11-lval-rval/ title=左值和右值>左值和右值</a></h1></header><date class="post-meta meta-date">2019年3月11日</date><div class=post-meta><span>|</span>
 <span class=meta-category><a href=https://www.offf.xyz/categories/c++11>c++11</a></span></div><div class=post-content>本文整理自网文，如有冒犯，请告知删除。 左值(lvalue)和右值(rvalue) 左值(lvalue)和右值(rvalue)是c/c++中的基础概念。 简单理解为：有名字的是左值，没有名字的是右值。
-C C语言中，左、右值均可为变量或表达式 C语言中，左值可出现在=号左边，也可出现在=号右边 C语言中，右值只能出现在=号右边 int x, y;
-x = 1;
-y = 2;
-x = y;
-y = x;
-2 = x; //err
-x,y为左值，2为右值
-CPP CPP语言中，一个表达式会产生一个左值，或者一个右值，前者称为左值表达式，后者称为右值表达式。 CPP语言中，对于基本类型，左值和右值概念与C语言相同。 CPP语言中，对于自定义类型，右值允许通过它的成员函数进行修改。 class A {
-public:
-A(int i) : _i(i) {}
-A& operator=(const A& other) {
-_i = other._i;
-return *this;
-}
-void set(int i) {
-_i = i;
-}
-int get() {
-return _i;
-}
-private:
-int _i;
-};
-int main() {
-A a(5);
-auto f = [&] () ->A {
-return a;
-}
-f().……</div><p class=readmore><a href=https://www.offf.xyz/cpp11-lval-rval/>阅读全文</a></p></article><article class=post><header><h1 class=post-title><a href=https://www.offf.xyz/cpp11-lambda/ title=lambda函数>lambda函数</a></h1></header><date class="post-meta meta-date">2019年3月10日</date><div class=post-meta><span>|</span>
-<span class=meta-category><a href=https://www.offf.xyz/categories/c++11>c++11</a></span></div><div class=post-content>格式 [捕捉列表] (参数) mutable -> 返回值类型 {函数体}
-lambda 表达式是一种匿名函数，即没有函数名的函数；该匿名函数是由数学中的λ演算而来的。
-种类 []{} 最简单的lambda函数 [var] 表示以值传递方式捕捉变量var int main() {
-int x = 5;
-auto f = [x]{
-//x is read-only
-int y;
-y = x + 1;
-std::cout &lt;&lt; y &lt;&lt; std::endl;
-};
-f();
-return 0;
-}
-$>> 6
-[=] 表示值传递捕捉所有父作用域变量 int main() {
-int x = 5;
-int y = 6;
-auto f = [=]{
-//x,y is read-only
-int z;
-z = x + y;
-std::cout &lt;&lt; z &lt;&lt; std::endl;
-};
-f();
-return 0;
-}
-$>> 11
-[&var] 表示以引用传递方式捕捉变量var int main() {
-int x = 5;
-auto f = [&x]{
-x++;
-};
-f();
-std::cout &lt;&lt; x &lt;&lt; std::endl;
-return 0;
-}
-$>> 6
-[&] 表示引用传递捕捉所有父作用域变量 int main() {
-int x = 5;
-int y = 0;
-auto f = [&]{
-x++;
-y++;
-};
-f();
-std::cout &lt;&lt; x &lt;&lt; std::endl;
-std::cout &lt;&lt; y &lt;&lt; std::endl;
-return 0;
-}
-$>> 6
-$>> 1
-[this] 表示值传递方式捕捉当前的this指针 class A {
-public:
-void foo() {
-auto f = [this] {
-bar();
-};
-f();
-}
-void bar() {
-std::cout &lt;&lt; "bar" &lt;&lt; std::endl;
-}
-};
-int main() {
-A a;
-a.……</div><p class=readmore><a href=https://www.offf.xyz/cpp11-lambda/>阅读全文</a></p></article><article class=post><header><h1 class=post-title><a href=https://www.offf.xyz/cpp11-weak_ptr/ title=c++11的weak_ptr>c++11的weak_ptr</a></h1></header><date class="post-meta meta-date">2019年3月9日</date><div class=post-meta><span>|</span>
-<span class=meta-category><a href=https://www.offf.xyz/categories/c++11>c++11</a></span></div><div class=post-content>why? class A {
-public:
-A() { std::cout &lt;&lt; "A ctor" &lt;&lt; std::endl;}
-~A() { std::cout &lt;&lt; "A dtor" &lt;&lt; std::endl; }
-std::shared_ptr&lt;B> spB;
-};
-class B {
-public:
-B() { std::cout &lt;&lt; "B ctor" &lt;&lt; std::endl;}
-~B() { std::cout &lt;&lt; "B dtor" &lt;&lt; std::endl; }
-std::shared_ptr&lt;A> spA;
-};
-int main() {
-std::shared_ptr&lt;A> spA = std::make_shared&lt;A>();
-std::shared_ptr&lt;B> spB = std::make_shared&lt;B>();
-spA->spB_ = spB;
-spB->spA_ = spA;
-return 0;
-}
-output:
-A ctor
-B ctor
-从以上结果可以看出，A、B均未释放，造成内存泄漏。 根本原因在于，A、B之间的循环引用。
+C C语言中，左、右值均可为变量或表达式 C语言中，左值可出现在=号左边，也可出现在=号右边 C语言中，右值只能出现在=号右边 int x, y; x = 1; y = 2; x = y; y = x; 2 = x; //err x,y为左值，2为右值 CPP CPP语言中，一个表达式会产生一个左值，或者一个右值，前者称为左值表达式，后者称为右值表达式。 CPP语言中，对于基本类型，左值和右值概念与C语言相同。 CPP语言中，对于自定义类型，右值允许通过它的成员函数进行修改。 class A { public: A(int i) : _i(i) {} A& operator=(const A& other) { _i = other._i; return *this; } void set(int i) { _i = i; } int get() { return _i; } private: int _i; }; int main() { A a(5); auto f = [&] () ->A { return a; } f().……</div><p class=readmore><a href=https://www.offf.xyz/cpp11-lval-rval/>阅读全文</a></p></article><article class=post><header><h1 class=post-title><a href=https://www.offf.xyz/cpp11-lambda/ title=lambda函数>lambda函数</a></h1></header><date class="post-meta meta-date">2019年3月10日</date><div class=post-meta><span>|</span>
+<span class=meta-category><a href=https://www.offf.xyz/categories/c++11>c++11</a></span></div><div class=post-content>格式 [捕捉列表] (参数) mutable -> 返回值类型 {函数体} lambda 表达式是一种匿名函数，即没有函数名的函数；该匿名函数是由数学中的λ演算而来的。
+种类 []{} 最简单的lambda函数 [var] 表示以值传递方式捕捉变量var int main() { int x = 5; auto f = [x]{ //x is read-only int y; y = x + 1; std::cout &lt;&lt; y &lt;&lt; std::endl; }; f(); return 0; } $>> 6 [=] 表示值传递捕捉所有父作用域变量 int main() { int x = 5; int y = 6; auto f = [=]{ //x,y is read-only int z; z = x + y; std::cout &lt;&lt; z &lt;&lt; std::endl; }; f(); return 0; } $>> 11 [&var] 表示以引用传递方式捕捉变量var int main() { int x = 5; auto f = [&x]{ x++; }; f(); std::cout &lt;&lt; x &lt;&lt; std::endl; return 0; } $>> 6 [&] 表示引用传递捕捉所有父作用域变量 int main() { int x = 5; int y = 0; auto f = [&]{ x++; y++; }; f(); std::cout &lt;&lt; x &lt;&lt; std::endl; std::cout &lt;&lt; y &lt;&lt; std::endl; return 0; } $>> 6 $>> 1 [this] 表示值传递方式捕捉当前的this指针 class A { public: void foo() { auto f = [this] { bar(); }; f(); } void bar() { std::cout &lt;&lt; "bar" &lt;&lt; std::endl; } }; int main() { A a; a.……</div><p class=readmore><a href=https://www.offf.xyz/cpp11-lambda/>阅读全文</a></p></article><article class=post><header><h1 class=post-title><a href=https://www.offf.xyz/cpp11-weak_ptr/ title=c++11的weak_ptr>c++11的weak_ptr</a></h1></header><date class="post-meta meta-date">2019年3月9日</date><div class=post-meta><span>|</span>
+<span class=meta-category><a href=https://www.offf.xyz/categories/c++11>c++11</a></span></div><div class=post-content>why? class A { public: A() { std::cout &lt;&lt; "A ctor" &lt;&lt; std::endl;} ~A() { std::cout &lt;&lt; "A dtor" &lt;&lt; std::endl; } std::shared_ptr&lt;B> spB; }; class B { public: B() { std::cout &lt;&lt; "B ctor" &lt;&lt; std::endl;} ~B() { std::cout &lt;&lt; "B dtor" &lt;&lt; std::endl; } std::shared_ptr&lt;A> spA; }; int main() { std::shared_ptr&lt;A> spA = std::make_shared&lt;A>(); std::shared_ptr&lt;B> spB = std::make_shared&lt;B>(); spA->spB_ = spB; spB->spA_ = spA; return 0; } output: A ctor B ctor 从以上结果可以看出，A、B均未释放，造成内存泄漏。 根本原因在于，A、B之间的循环引用。
 how? weak_ptr用来与shared_ptr共同使用，避免内存泄漏。
-class A {
-public:
-A() { std::cout &lt;&lt; "A ctor" &lt;&lt; std::endl;}
-~A() { std::cout &lt;&lt; "A dtor" &lt;&lt; std::endl; }
-void foo() {
-std::cout &lt;&lt; "I am foo" &lt;&lt; std::endl;
-}
-std::weak_ptr&lt;B> wpB_;
-};
-class B {
-public:
-B() { std::cout &lt;&lt; "B ctor" &lt;&lt; std::endl;}
-~B() { std::cout &lt;&lt; "B dtor" &lt;&lt; std::endl; }
-std::weak_ptr&lt;A> wpA_;
-};
-int main() {
-std::shared_ptr&lt;A> spA = std::make_shared&lt;A>();
-std::shared_ptr&lt;B> spB = std::make_shared&lt;B>();
-spA->wpB_ = spB;
-spB->wpA_ = spA;
-spB->wpA_.……</div><p class=readmore><a href=https://www.offf.xyz/cpp11-weak_ptr/>阅读全文</a></p></article><ol class=page-navigator><li class=prev><a href=https://www.offf.xyz/>上一页</a></li><li><a href=https://www.offf.xyz/>1</a></li><li class=current><a href=https://www.offf.xyz/page/2/>2</a></li><li><a href=https://www.offf.xyz/page/3/>3</a></li><li><a href=https://www.offf.xyz/page/4/>4</a></li><li class=next><a href=https://www.offf.xyz/page/3/>下一页</a></li></ol></div></div><div id=secondary><section class=widget><form id=search action=https://www.offf.xyz/search method=get accept-charset=utf-8 target=_blank _lpchecked=1><input type=text name=q maxlength=20 placeholder=Search>
+class A { public: A() { std::cout &lt;&lt; "A ctor" &lt;&lt; std::endl;} ~A() { std::cout &lt;&lt; "A dtor" &lt;&lt; std::endl; } void foo() { std::cout &lt;&lt; "I am foo" &lt;&lt; std::endl; } std::weak_ptr&lt;B> wpB_; }; class B { public: B() { std::cout &lt;&lt; "B ctor" &lt;&lt; std::endl;} ~B() { std::cout &lt;&lt; "B dtor" &lt;&lt; std::endl; } std::weak_ptr&lt;A> wpA_; }; int main() { std::shared_ptr&lt;A> spA = std::make_shared&lt;A>(); std::shared_ptr&lt;B> spB = std::make_shared&lt;B>(); spA->wpB_ = spB; spB->wpA_ = spA; spB->wpA_.……</div><p class=readmore><a href=https://www.offf.xyz/cpp11-weak_ptr/>阅读全文</a></p></article><ol class=page-navigator><li class=prev><a href=https://www.offf.xyz/>上一页</a></li><li><a href=https://www.offf.xyz/>1</a></li><li class=current><a href=https://www.offf.xyz/page/2/>2</a></li><li><a href=https://www.offf.xyz/page/3/>3</a></li><li><a href=https://www.offf.xyz/page/4/>4</a></li><li class=next><a href=https://www.offf.xyz/page/3/>下一页</a></li></ol></div></div><div id=secondary><section class=widget><form id=search action=https://www.offf.xyz/search method=get accept-charset=utf-8 target=_blank _lpchecked=1><input type=text name=q maxlength=20 placeholder=Search>
 <input type=hidden name=sitesearch value=https://www.offf.xyz/>
 <button type=submit class="submit icon-search"></button></form></section><section class=widget><h3 class=widget-title>最近文章</h3><ul class=widget-list></ul></section><section class=widget><h3 class=widget-title>分类</h3><ul class=widget-list><li><a href=https://www.offf.xyz/categories/c++/>c++ (1)</a></li><li><a href=https://www.offf.xyz/categories/c++11/>c++11 (5)</a></li><li><a href=https://www.offf.xyz/categories/curl/>curl (1)</a></li><li><a href=https://www.offf.xyz/categories/editor/>editor (1)</a></li><li><a href=https://www.offf.xyz/categories/golang/>golang (10)</a></li><li><a href=https://www.offf.xyz/categories/shell/>shell (2)</a></li></ul></section><section class=widget><h3 class=widget-title>标签</h3><div class=tagcloud><a href=https://www.offf.xyz/tags/c++/>c++</a>
 <a href=https://www.offf.xyz/tags/c++11/>c++11</a>

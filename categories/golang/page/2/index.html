@@ -1,34 +1,10 @@
-<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=generator content="Hugo 0.69.0"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><title>golang | A Crazy Cat</title><meta property="og:title" content="golang - A Crazy Cat"><meta property="og:type" content="article"><meta name=Keywords content><meta name=description content="golang"><meta name=author content="Gray Lnil"><meta property="og:url" content="https://www.offf.xyz/categories/golang/"><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link rel=stylesheet href=/css/normalize.css><link rel=stylesheet href=/css/style.css><link rel=alternate type=application/rss+xml+xml href=https://www.offf.xyz/categories/golang/index.xml title="A Crazy Cat"><script type=text/javascript src=//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js></script></head><body><header id=header class=clearfix><div class=container><div class=col-group><div class=site-name><a id=logo href=https://www.offf.xyz/>A Crazy Cat</a><p class=description>Maybe nothing was found here.</p></div><div><nav id=nav-menu class=clearfix><a href=https://www.offf.xyz/>首页</a>
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=generator content="Hugo 0.69.2"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><title>golang | A Crazy Cat</title><meta property="og:title" content="golang - A Crazy Cat"><meta property="og:type" content="article"><meta name=Keywords content><meta name=description content="golang"><meta name=author content="Gray Lnil"><meta property="og:url" content="https://www.offf.xyz/categories/golang/"><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link rel=stylesheet href=/css/normalize.css><link rel=stylesheet href=/css/style.css><link rel=alternate type=application/rss+xml+xml href=https://www.offf.xyz/categories/golang/index.xml title="A Crazy Cat"><script type=text/javascript src=//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js></script></head><body><header id=header class=clearfix><div class=container><div class=col-group><div class=site-name><a id=logo href=https://www.offf.xyz/>A Crazy Cat</a><p class=description>Maybe nothing was found here.</p></div><div><nav id=nav-menu class=clearfix><a href=https://www.offf.xyz/>首页</a>
 <a href=https://www.offf.xyz/archives/ title=归档>归档</a>
 <a href=https://www.offf.xyz/about/ title=关于>关于</a></nav></div></div></div></header><div id=body><div class=container><div class=col-group><div class=col-8 id=main><div class=res-cons><h3 class=archive-title>分类
 <span class=keyword>golang</span>
 中的文章</h3><article class=post><header><h1 class=post-title><a href=https://www.offf.xyz/gopl-ch08/>Goroutines和Channels</a></h1></header><date class="post-meta meta-date">2019年3月8日</date><div class="post-meta meta-category">|
 <a href=https://www.offf.xyz/categories/golang>golang</a></div><div class=post-content>CSP: “顺序通信进程”(communicating sequential processes)或被简称为CSP。 CSP是一种现代的并发编程模型，在这种编程模型中值会在不同的运行实例(goroutine)中传递。
-一、Goroutines 定义：在GO中，每个并发的执行单元被称为一个goroutine go语句： 在函数或方法前加上关键字go，就形成了go语句。go语句使函数或方法在新建的goroutine中执行。 程序启动时，主函数（main函数）会在main goroutine中执行。当main goroutine退出时，所有其它goroutine都会退出。 f() // call f(); wait for it to return
-go f() // create a new goroutine that calls f(); don't wait
-func main() {
-l, err := net.Listen("tcp", "192.168.0.1:8000")
-if err != nil {
-log.Fatal(err)
-}
-for {
-conn, err := l.Accept()
-if err != nil {
-log.Print(err)
-continue
-}
-go handleConn(conn)
-}
-}
-二、Channels channel 是 goroutines之间通信的机制 通过make来创建一个channel 与map类似，channel也是能底层数据结构的引用，作为函数参数传递时，是传递的引用。 channel的零值为nil。 channel之间可以用 == 进行比较。 一个channel有发送和接收两个操作，都是通信行为。 发送将一个值从一个goroutine发送到另一个接收该值的goroutine。 发送和接收都使用 &lt;- 运算符号，发送时，&lt;-分割channel和要发送的值。接收时，&lt;-放在channel之前。 在关闭的channel上发送数据会引起panic, 但可以接收数据，如果被关闭的channel中没有数据，则得到零值。 ch &lt;- x // a send statement
-y := &lt;-ch // a receive expression in an assignment statement
-&lt;-ch // a receive statement; result is discarded
-close(ch) // close channel
-三、不带缓冲的channel ch = make(chan int) // unbuffered channel
-ch = make(chan int, 0) // unbuffered channel
-ch = make(chan int, 3) // buffered channel with capacity 3
-在无缓存的channel上进行收发操作，将会导致此goroutine阻塞，直到有另一个goroutine对该通道进行发收操作。 无缓存的channel上的收发，导致两个goroutine进行一次同步操作。所以，无缓存channel也叫同步channel。 当我们说x事件既不是在y事件之前发生也不是在y事件之后发生，我们就说x事件和y事件是并发的。 func main() {
-conn, err := net.……<p class=readmore><a href=https://www.offf.xyz/gopl-ch08/>阅读全文</a></p></div></article><article class=post><header><h1 class=post-title><a href=https://www.offf.xyz/gopl-ch01/>Golang 入门</a></h1></header><date class="post-meta meta-date">2019年3月8日</date><div class="post-meta meta-category">|
+一、Goroutines 定义：在GO中，每个并发的执行单元被称为一个goroutine go语句： 在函数或方法前加上关键字go，就形成了go语句。go语句使函数或方法在新建的goroutine中执行。 程序启动时，主函数（main函数）会在main goroutine中执行。当main goroutine退出时，所有其它goroutine都会退出。 f() // call f(); wait for it to return go f() // create a new goroutine that calls f(); don't wait func main() { l, err := net.Listen("tcp", "192.168.0.1:8000") if err != nil { log.Fatal(err) } for { conn, err := l.Accept() if err != nil { log.Print(err) continue } go handleConn(conn) } } 二、Channels channel 是 goroutines之间通信的机制 通过make来创建一个channel 与map类似，channel也是能底层数据结构的引用，作为函数参数传递时，是传递的引用。 channel的零值为nil。 channel之间可以用 == 进行比较。 一个channel有发送和接收两个操作，都是通信行为。 发送将一个值从一个goroutine发送到另一个接收该值的goroutine。 发送和接收都使用 &lt;- 运算符号，发送时，&lt;-分割channel和要发送的值。接收时，&lt;-放在channel之前。 在关闭的channel上发送数据会引起panic, 但可以接收数据，如果被关闭的channel中没有数据，则得到零值。 ch &lt;- x // a send statement y := &lt;-ch // a receive expression in an assignment statement &lt;-ch // a receive statement; result is discarded close(ch) // close channel 三、不带缓冲的channel ch = make(chan int) // unbuffered channel ch = make(chan int, 0) // unbuffered channel ch = make(chan int, 3) // buffered channel with capacity 3 在无缓存的channel上进行收发操作，将会导致此goroutine阻塞，直到有另一个goroutine对该通道进行发收操作。 无缓存的channel上的收发，导致两个goroutine进行一次同步操作。所以，无缓存channel也叫同步channel。 当我们说x事件既不是在y事件之前发生也不是在y事件之后发生，我们就说x事件和y事件是并发的。 func main() { conn, err := net.……<p class=readmore><a href=https://www.offf.xyz/gopl-ch08/>阅读全文</a></p></div></article><article class=post><header><h1 class=post-title><a href=https://www.offf.xyz/gopl-ch01/>Golang 入门</a></h1></header><date class="post-meta meta-date">2019年3月8日</date><div class="post-meta meta-category">|
 <a href=https://www.offf.xyz/categories/golang>golang</a></div><div class=post-content>语言支持 Go语言原生支持Unicode，它可以处理全世界任何语言的文本。
 语言组织 Go语言代码由包组织而成 一个目录定义一个包，目录中存放N个.go源码包 包通过import关键字导入到其它的包中使用 Go采用静态编译，将所有第三方依赖打包编译为一个光秃秃的可执行文件 Go语言只有一种循环语言，就是for语句 printf常用转换字符 %d 十进制整数
 %x, %o, %b 十六进制，八进制，二进制整数。
@@ -42,31 +18,7 @@ conn, err := net.……<p class=readmore><a href=https://www.offf.xyz/gopl-ch08/
 %% 字面上的百分号标志（无操作数）
 ……<p class=readmore><a href=https://www.offf.xyz/gopl-ch01/>阅读全文</a></p></div></article><article class=post><header><h1 class=post-title><a href=https://www.offf.xyz/gopl-ch07/>Golang接口</a></h1></header><date class="post-meta meta-date">2019年3月6日</date><div class="post-meta meta-category">|
 <a href=https://www.offf.xyz/categories/golang>golang</a></div><div class=post-content>一、概念 接口类型是一种抽象的类型。它只展示出类型的方法，不做具体的实现。
-//
-package fmt
-func Fprintf(w io.Writer, format string, args ...interface{}) (int, error)
-func Printf(format string, args ...interface{}) (int, error) {
-return Fprintf(os.Stdout, format, args...)
-}
-func Sprintf(format string, args ...interface{}) string {
-var buf bytes.Buffer
-Fprintf(&buf, format, args...)
-return buf.String()
-}
-//io.Writer为接口类型
-package io
-// Writer is the interface that wraps the basic Write method.
-type Writer interface {
-Write(p []byte) (n int, err error)
-}
-//io.Writer实现示例
-type ByteCounter int
-func (c *ByteCounter) Write(p []byte) (int, error) {
-*c += ByteCounter(len(p)) // convert int to ByteCounter
-return len(p), nil
-}
-var c ByteCounter
-c.……<p class=readmore><a href=https://www.offf.xyz/gopl-ch07/>阅读全文</a></p></div></article><article class=post><header><h1 class=post-title><a href=https://www.offf.xyz/gopl-ch00/>Golang简介整理</a></h1></header><date class="post-meta meta-date">2019年3月6日</date><div class="post-meta meta-category">|
+// package fmt func Fprintf(w io.Writer, format string, args ...interface{}) (int, error) func Printf(format string, args ...interface{}) (int, error) { return Fprintf(os.Stdout, format, args...) } func Sprintf(format string, args ...interface{}) string { var buf bytes.Buffer Fprintf(&buf, format, args...) return buf.String() } //io.Writer为接口类型 package io // Writer is the interface that wraps the basic Write method. type Writer interface { Write(p []byte) (n int, err error) } //io.Writer实现示例 type ByteCounter int func (c *ByteCounter) Write(p []byte) (int, error) { *c += ByteCounter(len(p)) // convert int to ByteCounter return len(p), nil } var c ByteCounter c.……<p class=readmore><a href=https://www.offf.xyz/gopl-ch07/>阅读全文</a></p></div></article><article class=post><header><h1 class=post-title><a href=https://www.offf.xyz/gopl-ch00/>Golang简介整理</a></h1></header><date class="post-meta meta-date">2019年3月6日</date><div class="post-meta meta-category">|
 <a href=https://www.offf.xyz/categories/golang>golang</a></div><div class=post-content>B语言 -> C语言 -> Go语言，Go语言被称为21世纪的C语言。 没有隐式的数值转换 没有构造函数和析构函数 没有运算符重载 没有默认参数 没有继承 没有泛型 没有异常 没有宏 没有函数修饰 更没有线程局部存储。 ……<p class=readmore><a href=https://www.offf.xyz/gopl-ch00/>阅读全文</a></p></div></article><article class=post><header><h1 class=post-title><a href=https://www.offf.xyz/the-go-programming-language/>The Go Programming Language</a></h1></header><date class="post-meta meta-date">2019年3月5日</date><div class="post-meta meta-category">|
 <a href=https://www.offf.xyz/categories/golang>golang</a></div><div class=post-content>1-5: 基础部分 6: 方法 7: 接口 8: CSP概念的并发编程 9: 共享变量的并发编程 10: 包的机制和结构 11: 单元测试 12: 反射 13: 底层编程 ……<p class=readmore><a href=https://www.offf.xyz/the-go-programming-language/>阅读全文</a></p></div></article><ol class=page-navigator><li class=prev><a href=https://www.offf.xyz/categories/golang/>上一页</a></li><li><a href=https://www.offf.xyz/categories/golang/>1</a></li><li class=current><a href=https://www.offf.xyz/categories/golang/page/2/>2</a></li></ol></div></div><div id=secondary><section class=widget><form id=search action=https://www.offf.xyz/search method=get accept-charset=utf-8 target=_blank _lpchecked=1><input type=text name=q maxlength=20 placeholder=Search>
 <input type=hidden name=sitesearch value=https://www.offf.xyz/>

@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=generator content="Hugo 0.69.0"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><title>golang | A Crazy Cat</title><meta property="og:title" content="golang - A Crazy Cat"><meta property="og:type" content="article"><meta name=Keywords content><meta name=description content="golang"><meta name=author content="Gray Lnil"><meta property="og:url" content="https://www.offf.xyz/tags/golang/"><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link rel=stylesheet href=/css/normalize.css><link rel=stylesheet href=/css/style.css><link rel=alternate type=application/rss+xml+xml href=https://www.offf.xyz/tags/golang/index.xml title="A Crazy Cat"><script type=text/javascript src=//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js></script></head><body><header id=header class=clearfix><div class=container><div class=col-group><div class=site-name><a id=logo href=https://www.offf.xyz/>A Crazy Cat</a><p class=description>Maybe nothing was found here.</p></div><div><nav id=nav-menu class=clearfix><a href=https://www.offf.xyz/>首页</a>
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=generator content="Hugo 0.69.2"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><title>golang | A Crazy Cat</title><meta property="og:title" content="golang - A Crazy Cat"><meta property="og:type" content="article"><meta name=Keywords content><meta name=description content="golang"><meta name=author content="Gray Lnil"><meta property="og:url" content="https://www.offf.xyz/tags/golang/"><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link rel=stylesheet href=/css/normalize.css><link rel=stylesheet href=/css/style.css><link rel=alternate type=application/rss+xml+xml href=https://www.offf.xyz/tags/golang/index.xml title="A Crazy Cat"><script type=text/javascript src=//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js></script></head><body><header id=header class=clearfix><div class=container><div class=col-group><div class=site-name><a id=logo href=https://www.offf.xyz/>A Crazy Cat</a><p class=description>Maybe nothing was found here.</p></div><div><nav id=nav-menu class=clearfix><a href=https://www.offf.xyz/>首页</a>
 <a href=https://www.offf.xyz/archives/ title=归档>归档</a>
 <a href=https://www.offf.xyz/about/ title=关于>关于</a></nav></div></div></div></header><div id=body><div class=container><div class=col-group><div class=col-8 id=main><div class=res-cons><h3 class=archive-title>包含标签
 <span class=keyword>golang</span>
@@ -10,63 +10,13 @@ Go语言OOP的两个关键是封装和组合
 （2）引用类型：指针、slice切片、map、管道channel、interface等；
 值类型和引用类型的区别： （1）值类型，变量直接存储，内存通常在栈中分配；
 （2）引用类型：变量存储的是一个地址，这个地址对应的空间才是真正存储的数据值，内存通常在堆上分配，当没有任何变量引用这个地址时，此地址对应的数据空间就是一个垃圾，由GC来回收；
-type Point struct {
-x, y float64
-}
-//function func Distance(p, q Point) float64 {
-return math.Hypot(q.x-p.x, q.x-p.x)
-}
-//method
-//p为方法的接收器(receiver)，接收器的名字建议用类型的第一个字母或第2个word的第一个字母
-func (p Point) Distance(q Point) float64 {
-return math.Hypot(q.x-p.x, q.y-p.y)
-}
-p := Point{1, 2}
-q := Point{4, 6}
-fmt.Println(Distance(p, q)) // "5", function call
-fmt.Println(p.Distance(q)) // "5", method call
-//p.Distance被称为选择器
-//计算线段的长度
-// A Path is a journey connecting the points with straight lines.……<p class=readmore><a href=https://www.offf.xyz/gopl-ch06/>阅读全文</a></p></div></article><article class=post><header><h1 class=post-title><a href=https://www.offf.xyz/gopl-ch05/>Golang函数</a></h1></header><date class="post-meta meta-date">2019年3月16日</date><div class="post-meta meta-category">|
+type Point struct { x, y float64 } //function func Distance(p, q Point) float64 { return math.Hypot(q.x-p.x, q.x-p.x) } //method //p为方法的接收器(receiver)，接收器的名字建议用类型的第一个字母或第2个word的第一个字母 func (p Point) Distance(q Point) float64 { return math.Hypot(q.x-p.x, q.y-p.y) } p := Point{1, 2} q := Point{4, 6} fmt.Println(Distance(p, q)) // "5", function call fmt.Println(p.Distance(q)) // "5", method call //p.Distance被称为选择器 //计算线段的长度 // A Path is a journey connecting the points with straight lines.……<p class=readmore><a href=https://www.offf.xyz/gopl-ch06/>阅读全文</a></p></div></article><article class=post><header><h1 class=post-title><a href=https://www.offf.xyz/gopl-ch05/>Golang函数</a></h1></header><date class="post-meta meta-date">2019年3月16日</date><div class="post-meta meta-category">|
 <a href=https://www.offf.xyz/categories/golang>golang</a></div><div class=post-content>一、函数定义 函数声明包括函数名、形式参数列表、返回值列表（可省略）以及函数体。
-func name(parameter-list) (result-list) {
-body
-}
-func add(x int, y int) int {return x + y}
-func sub(x, y int) (z int) { z = x - y; return}
-func first(x int, _ int) int { return x }
-func zero(int, int) int { return 0 }
-fmt.Printf("%T\n", add) // "func(int, int) int"
-fmt.Printf("%T\n", sub) // "func(int, int) int"
-fmt.Printf("%T\n", first) // "func(int, int) int"
-fmt.Printf("%T\n", zero) // "func(int, int) int"
-二、递归 函数可以调用函数自身。
-func f(n int) int {
-if n == 1 || n == 2 {
-return 1
-}
-return f(n-1) + f(n-2)
-}
-三、多返回值函数 Go可以返回多个值给调用者……<p class=readmore><a href=https://www.offf.xyz/gopl-ch05/>阅读全文</a></p></div></article><article class=post><header><h1 class=post-title><a href=https://www.offf.xyz/gopl-ch04/>Golang复合类型</a></h1></header><date class="post-meta meta-date">2019年3月13日</date><div class="post-meta meta-category">|
+func name(parameter-list) (result-list) { body } func add(x int, y int) int {return x + y} func sub(x, y int) (z int) { z = x - y; return} func first(x int, _ int) int { return x } func zero(int, int) int { return 0 } fmt.Printf("%T\n", add) // "func(int, int) int" fmt.Printf("%T\n", sub) // "func(int, int) int" fmt.Printf("%T\n", first) // "func(int, int) int" fmt.Printf("%T\n", zero) // "func(int, int) int" 二、递归 函数可以调用函数自身。
+func f(n int) int { if n == 1 || n == 2 { return 1 } return f(n-1) + f(n-2) } 三、多返回值函数 Go可以返回多个值给调用者……<p class=readmore><a href=https://www.offf.xyz/gopl-ch05/>阅读全文</a></p></div></article><article class=post><header><h1 class=post-title><a href=https://www.offf.xyz/gopl-ch04/>Golang复合类型</a></h1></header><date class="post-meta meta-date">2019年3月13日</date><div class="post-meta meta-category">|
 <a href=https://www.offf.xyz/categories/golang>golang</a></div><div class=post-content>简述 基本类型是Go语言世界的原子，复合类型则是分子。
 数组 数组是固定长度的序列。因此，其很少直接使用。 与C语言数组特性类似。
-var a [3]int //其中[3]int为数组类型
-fmt.Println(a[0])
-fmt.Println(a[len(a) - 1])
-var b [3]int = [3]int{1, 2, 3}
-var c [3]int = [3]int{1, 2}
-var d = [...]int{1, 2, 3, 4} // len = 4
-q := [...]int{1, 2}
-//指定一个索引和对应值列表的方式初始化
-type Currency int
-const (
-USD Currency = iota // 美元
-EUR // 欧元
-GBP // 英镑
-RMB // 人民币
-)
-symbol := [...]string{USD: "$", EUR: "€", GBP: "￡", RMB: "￥"}
-fmt.……<p class=readmore><a href=https://www.offf.xyz/gopl-ch04/>阅读全文</a></p></div></article><article class=post><header><h1 class=post-title><a href=https://www.offf.xyz/gopl-ch03/>Golang基础数据类型</a></h1></header><date class="post-meta meta-date">2019年3月12日</date><div class="post-meta meta-category">|
+var a [3]int //其中[3]int为数组类型 fmt.Println(a[0]) fmt.Println(a[len(a) - 1]) var b [3]int = [3]int{1, 2, 3} var c [3]int = [3]int{1, 2} var d = [...]int{1, 2, 3, 4} // len = 4 q := [...]int{1, 2} //指定一个索引和对应值列表的方式初始化 type Currency int const ( USD Currency = iota // 美元 EUR // 欧元 GBP // 英镑 RMB // 人民币 ) symbol := [...]string{USD: "$", EUR: "€", GBP: "￡", RMB: "￥"} fmt.……<p class=readmore><a href=https://www.offf.xyz/gopl-ch04/>阅读全文</a></p></div></article><article class=post><header><h1 class=post-title><a href=https://www.offf.xyz/gopl-ch03/>Golang基础数据类型</a></h1></header><date class="post-meta meta-date">2019年3月12日</date><div class="post-meta meta-category">|
 <a href=https://www.offf.xyz/categories/golang>golang</a></div><div class=post-content>整型 一般整型
 int8 int16 int32 int64
 uint8 uint16 uint32 uint64
@@ -75,35 +25,13 @@ byte类型等价于uint8类型，byte用于强调数据的原始性。
 uintptr用来存放指针，多用于底层编程。
 int和int32大小相同，但是，是两个不同的类型。
 取模的结果总是与被取模数的符号相同
-fmt.Println(5%3) //2
-fmt.Println(5%-3) //2
-fmt.Println(-5%3) //-2
-fmt.Println(-5%-3) //-2
-符点数 float32、float64
+fmt.Println(5%3) //2 fmt.Println(5%-3) //2 fmt.Println(-5%3) //-2 fmt.Println(-5%-3) //-2 符点数 float32、float64
 通常应该优先使用float64类型，因为float32类型的累计计算误差很容易扩散。
 复数 complex64、complex128
-var x complex128 = complex(1, 2) // 1+2i
-var y complex128 = complex(3, 4) // 3+4i
-fmt.Println(x*y) // "(-5+10i)"
-fmt.Println(real(x*y)) // "-5" //取实部
-fmt.Println(imag(x*y)) // "10" //取虚部
-布尔型 true/false
+var x complex128 = complex(1, 2) // 1+2i var y complex128 = complex(3, 4) // 3+4i fmt.Println(x*y) // "(-5+10i)" fmt.Println(real(x*y)) // "-5" //取实部 fmt.Println(imag(x*y)) // "10" //取虚部 布尔型 true/false
 // btoi returns 1 if b is true and 0 if false.……<p class=readmore><a href=https://www.offf.xyz/gopl-ch03/>阅读全文</a></p></div></article><article class=post><header><h1 class=post-title><a href=https://www.offf.xyz/gopl-ch02/>Golang 程序结构</a></h1></header><date class="post-meta meta-date">2019年3月9日</date><div class="post-meta meta-category">|
 <a href=https://www.offf.xyz/categories/golang>golang</a></div><div class=post-content>关键字 go中含有25个关键字
-break default func interface select
-case defer go map struct
-chan else goto package switch
-const fallthrough if range type
-continue for import return var
-此外，还有大约30多个预定义的名字 内建常量: true false iota nil
-内建类型: int int8 int16 int32 int64
-uint uint8 uint16 uint32 uint64 uintptr
-float32 float64 complex128 complex64
-bool byte rune string error
-内建函数: make len cap new append copy close delete
-complex real imag
-panic recover
-名字大小写 大写的名字表明是可导出的，即可被其它包访问，如fmt包中的Println 小写的名字只能在包内使用
+break default func interface select case defer go map struct chan else goto package switch const fallthrough if range type continue for import return var 此外，还有大约30多个预定义的名字 内建常量: true false iota nil 内建类型: int int8 int16 int32 int64 uint uint8 uint16 uint32 uint64 uintptr float32 float64 complex128 complex64 bool byte rune string error 内建函数: make len cap new append copy close delete complex real imag panic recover 名字大小写 大写的名字表明是可导出的，即可被其它包访问，如fmt包中的Println 小写的名字只能在包内使用
 名字长度 一般名字的长度是没有限制的。 Go提倡短小的名称，如表示索引，定义为i,而不是index等 当作用域范围较大或生命周期较长的变量，采用较长的名字可能会更好。
 声明 主要有4种类型的声明语句：
 var(变量)
